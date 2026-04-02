@@ -1,0 +1,371 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 4 /Kids [4 0 R 6 0 R 8 0 R 10 0 R] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 1496 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+50 780 Td
+(ALUR PROSES SIMPANAN KOPERASI KARYAWAN) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(RINGKASAN JENIS SIMPANAN) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(| Jenis Simpanan | Cara Pencatatan | Cara Tagih | Bisa Dicicil | Bisa Ditarik |) Tj
+T*
+(| --- | --- | --- | --- | --- |) Tj
+T*
+(| Simpanan Wajib | Tagihan | Bulanan | Ya, melalui pelunasan tagihan bertahap | Ya, saat) Tj
+T*
+(anggota keluar |) Tj
+T*
+(| Simpanan Pokok | Tagihan | Sekali | Tidak pada aturan awal | Ya, saat anggota keluar |) Tj
+T*
+(| Simpanan Sukarela | Transaksi langsung | Tidak ditagih | Tidak relevan | Ya |) Tj
+T*
+(| Simpanan Penyertaan | Tagihan | Sekali | Ya | Tidak |) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(TABEL YANG DIGUNAKAN) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(- `anggota`) Tj
+T*
+(- `jenis_simpanan`) Tj
+T*
+(- `pengaturan_simpanan`) Tj
+T*
+(- `batch_generate_tagihan_simpanan`) Tj
+T*
+(- `tagihan_simpanan`) Tj
+T*
+(- `transaksi_simpanan`) Tj
+T*
+(- `alokasi_pembayaran_simpanan`) Tj
+T*
+(- `penarikan_simpanan`) Tj
+T*
+(- `saldo_simpanan_anggota`) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 1 - ANGGOTA BARU) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Admin membuat data anggota.) Tj
+T*
+(* Sistem membuat saldo awal simpanan per anggota.) Tj
+T*
+(* Sistem membuat tagihan sekali untuk Simpanan Pokok.) Tj
+T*
+(* Sistem membuat tagihan sekali untuk Simpanan Penyertaan jika diwajibkan.) Tj
+T*
+(* Anggota mulai ikut generate Simpanan Wajib sesuai periode berlaku koperasi.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 2 - GENERATE SIMPANAN WAJIB BULANAN) Tj
+T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 1640 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+50 780 Td
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Admin menjalankan proses generate tagihan bulanan.) Tj
+T*
+(* Sistem membuat record batch pada `batch_generate_tagihan_simpanan`.) Tj
+T*
+(* Sistem membaca nominal aktif dari `pengaturan_simpanan`.) Tj
+T*
+(* Sistem membuat `tagihan_simpanan` untuk anggota yang belum keluar.) Tj
+T*
+(* Sistem menandai batch sebagai selesai setelah tagihan terbentuk.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Catatan:) Tj
+T*
+(- Satu batch hanya berlaku untuk satu jenis simpanan dan satu periode.) Tj
+T*
+(- Tagihan bulan yang sama tidak boleh tergenerate dobel.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 3 - PEMBAYARAN SIMPANAN WAJIB) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Petugas mencatat pembayaran pada `transaksi_simpanan`.) Tj
+T*
+(* Sistem mencari tagihan wajib tertua yang belum lunas.) Tj
+T*
+(* Sistem mengalokasikan pembayaran ke satu atau beberapa tagihan melalui) Tj
+T*
+(`alokasi_pembayaran_simpanan`.) Tj
+T*
+(* Sistem memperbarui `nominal_terbayar` dan `status_tagihan`.) Tj
+T*
+(* Sistem memperbarui ringkasan di `saldo_simpanan_anggota`.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Catatan:) Tj
+T*
+(- Pembayaran 1 tahun langsung tetap dicatat sebagai satu transaksi.) Tj
+T*
+(- Sistem mengalokasikan transaksi itu ke 12 tagihan bulanan.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 4 - PEMBAYARAN SIMPANAN POKOK) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Saat anggota masuk, sistem membuat satu tagihan Simpanan Pokok.) Tj
+T*
+(* Petugas mencatat pembayaran.) Tj
+T*
+(* Sistem mengalokasikan pembayaran ke tagihan pokok.) Tj
+T*
+(* Tagihan berstatus `SEBAGIAN` atau `LUNAS`.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 5 - PEMBAYARAN SIMPANAN PENYERTAAN) Tj
+T*
+() Tj
+T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 1439 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+50 780 Td
+() Tj
+T*
+() Tj
+T*
+(* Sistem membuat satu tagihan Simpanan Penyertaan.) Tj
+T*
+(* Anggota dapat membayar bertahap.) Tj
+T*
+(* Setiap pembayaran dicatat di `transaksi_simpanan`.) Tj
+T*
+(* Sistem mengalokasikan pembayaran ke tagihan penyertaan sampai lunas.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 6 - SIMPANAN SUKARELA) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Anggota setor atau tarik dana.) Tj
+T*
+(* Petugas mencatat transaksi langsung pada `transaksi_simpanan`.) Tj
+T*
+(* Sistem menambah atau mengurangi saldo anggota.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Catatan:) Tj
+T*
+(- Simpanan sukarela tidak membuat tagihan.) Tj
+T*
+(- Simpanan sukarela tidak memiliki tunggakan.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 7 - PENARIKAN SIMPANAN) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Petugas membuat pengajuan pada `penarikan_simpanan`.) Tj
+T*
+(* Pengurus atau admin menyetujui atau menolak.) Tj
+T*
+(* Setelah direalisasikan, sistem membuat transaksi keluar dan memperbarui saldo.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Aturan penarikan:) Tj
+T*
+(- Simpanan Wajib dapat dihitung untuk pengembalian saat anggota keluar.) Tj
+T*
+(- Simpanan Pokok dapat dihitung untuk pengembalian saat anggota keluar.) Tj
+T*
+(- Simpanan Sukarela dapat ditarik.) Tj
+T*
+(- Simpanan Penyertaan tidak dapat ditarik.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ALUR 8 - ANGGOTA KELUAR) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(* Status anggota diubah menjadi keluar.) Tj
+T*
+(* Generate Simpanan Wajib dihentikan.) Tj
+T*
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 11 0 R >>
+endobj
+11 0 obj
+<< /Length 607 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+50 780 Td
+(* Sistem menghitung tunggakan terakhir.) Tj
+T*
+(* Sistem menghitung hak pengembalian simpanan yang boleh ditarik.) Tj
+T*
+(* Koperasi dapat melakukan kompensasi antara hak pengembalian dan tunggakan.) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(ATURAN PENTING) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(- Tunggakan dihitung dari tagihan yang belum lunas dan sudah lewat jatuh tempo.) Tj
+T*
+(- Simpanan Wajib tetap bulanan walaupun dibayar sekaligus 1 tahun.) Tj
+T*
+(- Simpanan Pokok dan Simpanan Penyertaan tetap berupa tagihan sekali.) Tj
+T*
+(- Simpanan Sukarela dicatat sebagai saldo berjalan.) Tj
+T*
+ET
+endstream
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000010 00000 n 
+0000000062 00000 n 
+0000000141 00000 n 
+0000000214 00000 n 
+0000000343 00000 n 
+0000001894 00000 n 
+0000002023 00000 n 
+0000003718 00000 n 
+0000003847 00000 n 
+0000005341 00000 n 
+0000005472 00000 n 
+trailer
+<< /Size 12 /Root 1 0 R >>
+startxref
+6134
+%%EOF

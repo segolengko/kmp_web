@@ -1,0 +1,9 @@
+.next/
+node_modules/
+.env.local
+.next-dev.log
+.next-dev.err.log
+.next-dev.out.log
+.next-dev.pid
+.tmp/
+.chrome-pdf/

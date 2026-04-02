@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Alur Proses Simpanan Koperasi Karyawan</title>
+  <style>
+    :root {
+      --text: #1f2937;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --soft: #f3f4f6;
+      --accent: #0f766e;
+    }
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      margin: 32px;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    h1, h2 {
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 28px;
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 10px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-top: 28px;
+    }
+    p, li {
+      color: var(--text);
+    }
+    .note {
+      background: #ecfeff;
+      border-left: 4px solid var(--accent);
+      padding: 10px 12px;
+      margin: 12px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: var(--soft);
+    }
+    code {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Alur Proses Simpanan Koperasi Karyawan</h1>
+
+  <h2>Ringkasan Jenis Simpanan</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Jenis Simpanan</th>
+        <th>Cara Pencatatan</th>
+        <th>Cara Tagih</th>
+        <th>Bisa Dicicil</th>
+        <th>Bisa Ditarik</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Simpanan Wajib</td>
+        <td>Tagihan</td>
+        <td>Bulanan</td>
+        <td>Ya, melalui pelunasan tagihan bertahap</td>
+        <td>Ya, saat anggota keluar</td>
+      </tr>
+      <tr>
+        <td>Simpanan Pokok</td>
+        <td>Tagihan</td>
+        <td>Sekali</td>
+        <td>Tidak pada aturan awal</td>
+        <td>Ya, saat anggota keluar</td>
+      </tr>
+      <tr>
+        <td>Simpanan Sukarela</td>
+        <td>Transaksi langsung</td>
+        <td>Tidak ditagih</td>
+        <td>Tidak relevan</td>
+        <td>Ya</td>
+      </tr>
+      <tr>
+        <td>Simpanan Penyertaan</td>
+        <td>Tagihan</td>
+        <td>Sekali</td>
+        <td>Ya</td>
+        <td>Tidak</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Tabel Yang Digunakan</h2>
+  <ul>
+    <li><code>anggota</code></li>
+    <li><code>jenis_simpanan</code></li>
+    <li><code>pengaturan_simpanan</code></li>
+    <li><code>batch_generate_tagihan_simpanan</code></li>
+    <li><code>tagihan_simpanan</code></li>
+    <li><code>transaksi_simpanan</code></li>
+    <li><code>alokasi_pembayaran_simpanan</code></li>
+    <li><code>penarikan_simpanan</code></li>
+    <li><code>saldo_simpanan_anggota</code></li>
+  </ul>
+
+  <h2>Alur 1 - Anggota Baru</h2>
+  <ol>
+    <li>Admin membuat data anggota.</li>
+    <li>Sistem membuat saldo awal simpanan per anggota.</li>
+    <li>Sistem membuat tagihan sekali untuk Simpanan Pokok.</li>
+    <li>Sistem membuat tagihan sekali untuk Simpanan Penyertaan jika diwajibkan.</li>
+    <li>Anggota mulai ikut generate Simpanan Wajib sesuai periode berlaku koperasi.</li>
+  </ol>
+
+  <h2>Alur 2 - Generate Simpanan Wajib Bulanan</h2>
+  <ol>
+    <li>Admin menjalankan proses generate tagihan bulanan.</li>
+    <li>Sistem membuat record batch pada <code>batch_generate_tagihan_simpanan</code>.</li>
+    <li>Sistem membaca nominal aktif dari <code>pengaturan_simpanan</code>.</li>
+    <li>Sistem membuat <code>tagihan_simpanan</code> untuk anggota yang belum keluar.</li>
+    <li>Sistem menandai batch sebagai selesai setelah tagihan terbentuk.</li>
+  </ol>
+  <div class="note">
+    Satu batch hanya berlaku untuk satu jenis simpanan dan satu periode. Tagihan bulan yang sama tidak boleh tergenerate dobel.
+  </div>
+
+  <h2>Alur 3 - Pembayaran Simpanan Wajib</h2>
+  <ol>
+    <li>Petugas mencatat pembayaran pada <code>transaksi_simpanan</code>.</li>
+    <li>Sistem mencari tagihan wajib tertua yang belum lunas.</li>
+    <li>Sistem mengalokasikan pembayaran ke satu atau beberapa tagihan melalui <code>alokasi_pembayaran_simpanan</code>.</li>
+    <li>Sistem memperbarui <code>nominal_terbayar</code> dan <code>status_tagihan</code>.</li>
+    <li>Sistem memperbarui ringkasan di <code>saldo_simpanan_anggota</code>.</li>
+  </ol>
+  <div class="note">
+    Pembayaran 1 tahun langsung tetap dicatat sebagai satu transaksi, lalu dialokasikan ke 12 tagihan bulanan.
+  </div>
+
+  <h2>Alur 4 - Pembayaran Simpanan Pokok</h2>
+  <ol>
+    <li>Saat anggota masuk, sistem membuat satu tagihan Simpanan Pokok.</li>
+    <li>Petugas mencatat pembayaran.</li>
+    <li>Sistem mengalokasikan pembayaran ke tagihan pokok.</li>
+    <li>Tagihan berstatus <code>SEBAGIAN</code> atau <code>LUNAS</code>.</li>
+  </ol>
+
+  <h2>Alur 5 - Pembayaran Simpanan Penyertaan</h2>
+  <ol>
+    <li>Sistem membuat satu tagihan Simpanan Penyertaan.</li>
+    <li>Anggota dapat membayar bertahap.</li>
+    <li>Setiap pembayaran dicatat di <code>transaksi_simpanan</code>.</li>
+    <li>Sistem mengalokasikan pembayaran ke tagihan penyertaan sampai lunas.</li>
+  </ol>
+
+  <h2>Alur 6 - Simpanan Sukarela</h2>
+  <ol>
+    <li>Anggota setor atau tarik dana.</li>
+    <li>Petugas mencatat transaksi langsung pada <code>transaksi_simpanan</code>.</li>
+    <li>Sistem menambah atau mengurangi saldo anggota.</li>
+  </ol>
+  <div class="note">
+    Simpanan sukarela tidak membuat tagihan dan tidak memiliki tunggakan.
+  </div>
+
+  <h2>Alur 7 - Penarikan Simpanan</h2>
+  <ol>
+    <li>Petugas membuat pengajuan pada <code>penarikan_simpanan</code>.</li>
+    <li>Pengurus atau admin menyetujui atau menolak.</li>
+    <li>Setelah direalisasikan, sistem membuat transaksi keluar dan memperbarui saldo.</li>
+  </ol>
+  <p>Aturan penarikan:</p>
+  <ul>
+    <li>Simpanan Wajib dapat dihitung untuk pengembalian saat anggota keluar.</li>
+    <li>Simpanan Pokok dapat dihitung untuk pengembalian saat anggota keluar.</li>
+    <li>Simpanan Sukarela dapat ditarik.</li>
+    <li>Simpanan Penyertaan tidak dapat ditarik.</li>
+  </ul>
+
+  <h2>Alur 8 - Anggota Keluar</h2>
+  <ol>
+    <li>Status anggota diubah menjadi keluar.</li>
+    <li>Generate Simpanan Wajib dihentikan.</li>
+    <li>Sistem menghitung tunggakan terakhir.</li>
+    <li>Sistem menghitung hak pengembalian simpanan yang boleh ditarik.</li>
+    <li>Koperasi dapat melakukan kompensasi antara hak pengembalian dan tunggakan.</li>
+  </ol>
+
+  <h2>Aturan Penting</h2>
+  <ul>
+    <li>Tunggakan dihitung dari tagihan yang belum lunas dan sudah lewat jatuh tempo.</li>
+    <li>Simpanan Wajib tetap bulanan walaupun dibayar sekaligus 1 tahun.</li>
+    <li>Simpanan Pokok dan Simpanan Penyertaan tetap berupa tagihan sekali.</li>
+    <li>Simpanan Sukarela dicatat sebagai saldo berjalan.</li>
+  </ul>
+</body>
+</html>

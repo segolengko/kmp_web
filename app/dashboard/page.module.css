@@ -1,0 +1,475 @@
+.dashboard {
+  padding: 22px 0 36px;
+}
+
+.dashboardShell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.sidebar,
+.mainPanel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.sidebar {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 22px;
+  position: sticky;
+  top: 22px;
+  max-height: calc(100vh - 44px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(51, 209, 198, 0.42) rgba(255, 255, 255, 0.04);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg, rgba(51, 209, 198, 0.72), rgba(255, 236, 186, 0.46));
+  border: 2px solid rgba(7, 12, 19, 0.72);
+  border-radius: 999px;
+  min-height: 40px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, rgba(51, 209, 198, 0.86), rgba(255, 236, 186, 0.62));
+}
+
+.sidebar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.logoBlock {
+  display: grid;
+  gap: 14px;
+}
+
+.logoMeta {
+  display: grid;
+  gap: 6px;
+}
+
+.logoMeta strong {
+  font-size: 1.02rem;
+}
+
+.logoMeta span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.menu {
+  display: grid;
+  gap: 12px;
+}
+
+.menuItem,
+.menuActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-weight: 700;
+}
+
+.menuItem {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.menuActive {
+  color: #032826;
+  background: linear-gradient(135deg, var(--accent) 0%, #14b8a6 100%);
+  box-shadow: 0 16px 32px rgba(20, 184, 166, 0.22);
+}
+
+.menuSection {
+  display: grid;
+  gap: 8px;
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.menuSection:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.menuHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.menuLabel {
+  padding: 2px 4px 4px;
+  color: #f3efe5;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.menuComingSoon {
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.025);
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.subMenu {
+  display: grid;
+  gap: 8px;
+  padding: 4px 0 0 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.subMenuItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 0.94rem;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.subMenuItem:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.065);
+  color: var(--text);
+}
+
+.menuIcon,
+.subMenuAccent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.menuIcon {
+  min-width: 36px;
+  height: 36px;
+  background: rgba(3, 40, 38, 0.12);
+}
+
+.subMenuAccent {
+  min-width: 28px;
+  height: 28px;
+  background: rgba(255, 236, 186, 0.1);
+  color: #ffe3a1;
+}
+
+.liveBadge,
+.comingSoonBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.liveBadge {
+  background: rgba(51, 209, 198, 0.12);
+  color: #91fff3;
+}
+
+.comingSoonBadge {
+  background: rgba(255, 236, 186, 0.1);
+  color: #ffe3a1;
+}
+
+.quickActions {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(51, 209, 198, 0.09), transparent 45%),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.quickActionsTitle {
+  color: #f3efe5;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.quickActionGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.quickActionPrimary,
+.quickActionSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-weight: 800;
+}
+
+.quickActionPrimary {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: #032826;
+}
+
+.quickActionSecondary {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: var(--text);
+}
+
+.mainPanel {
+  display: grid;
+  gap: 22px;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: start;
+}
+
+.header h1 {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.header p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  max-width: 52ch;
+  line-height: 1.7;
+}
+
+.headerAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: #032826;
+  font-weight: 700;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.statCard span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.statCard strong {
+  font-size: 1.8rem;
+  letter-spacing: -0.04em;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+}
+
+.sectionCard {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.sectionTitle h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.sectionTitle span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.activityList {
+  display: grid;
+  gap: 14px;
+}
+
+.activityItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(31, 41, 55, 0.12);
+}
+
+.activityItem:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.activityItem b,
+.alertItem b {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.activityItem span,
+.alertItem span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.activityValue {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.alertList {
+  display: grid;
+  gap: 12px;
+}
+
+.alertItem {
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(51, 209, 198, 0.09);
+}
+
+.warning {
+  background: rgba(244, 185, 66, 0.12);
+}
+
+@media (max-width: 1040px) {
+  .dashboardShell,
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    top: auto;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard {
+    padding: 14px 0 28px;
+  }
+
+  .sidebar,
+  .mainPanel,
+  .sectionCard,
+  .statCard {
+    border-radius: 22px;
+  }
+
+  .sidebar,
+  .mainPanel {
+    padding: 18px;
+  }
+
+  .menuActive,
+  .menuItem,
+  .subMenuItem,
+  .quickActionPrimary,
+  .quickActionSecondary {
+    width: 100%;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .activityItem {
+    flex-direction: column;
+  }
+
+  .activityValue {
+    white-space: normal;
+  }
+}
