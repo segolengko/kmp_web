@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS referensi_sr
+ADD COLUMN IF NOT EXISTS deskripsi TEXT;

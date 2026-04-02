@@ -2,18 +2,51 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import styles from "./login-form.module.css";
 
-export function LoginForm() {
+type LoginFormProps = {
+  redirectTo?: string;
+};
+
+export function LoginForm({ redirectTo }: LoginFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage("");
+    const destination = redirectTo && redirectTo.startsWith("/") ? redirectTo : "/dashboard";
 
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    router.push("/dashboard");
+    try {
+      const supabase = createSupabaseBrowserClient();
+
+      if (!supabase) {
+        await new Promise((resolve) => setTimeout(resolve, 700));
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+
+        if (error) {
+          throw error;
+        }
+      }
+
+      router.push(destination);
+      router.refresh();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Login gagal. Periksa email dan password.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -27,14 +60,28 @@ export function LoginForm() {
         </p>
       </div>
 
+      {errorMessage ? <div className={styles.errorBanner}>{errorMessage}</div> : null}
+
       <label className={styles.field}>
-        <span>Email atau No. Anggota</span>
-        <input type="text" placeholder="contoh: admin@koperasi.id" required />
+        <span>Email Login</span>
+        <input
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="contoh: admin@kmp.co.id"
+          required
+          type="email"
+          value={email}
+        />
       </label>
 
       <label className={styles.field}>
         <span>Password</span>
-        <input type="password" placeholder="Masukkan password" required />
+        <input
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="Masukkan password"
+          required
+          type="password"
+          value={password}
+        />
       </label>
 
       <div className={styles.row}>
@@ -48,7 +95,7 @@ export function LoginForm() {
       </div>
 
       <button className={styles.submit} disabled={isSubmitting} type="submit">
-        {isSubmitting ? "Memproses..." : "Masuk ke Dashboard"}
+        {isSubmitting ? "Memproses..." : "Masuk ke Sistem"}
       </button>
     </form>
   );

@@ -1,5 +1,7 @@
 import { createSupabaseServerClient } from "./supabase/server";
 
+type RelationValue<T> = T | T[] | null;
+
 export type PembayaranOption = {
   noAnggota: string;
   namaLengkap: string;
@@ -40,6 +42,22 @@ export type TransaksiSimpananItem = {
   keterangan: string | null;
 };
 
+export type PembayaranTagihanItem = {
+  id: number;
+  noTransaksi: string;
+  tanggalTransaksi: string | null;
+  noAnggota: string;
+  namaLengkap: string;
+  kodeSimpanan: string;
+  namaSimpanan: string;
+  tipeTransaksi: string;
+  metodeBayar: string | null;
+  nominal: number;
+  keterangan: string | null;
+  statusPembayaran: "AKTIF" | "DIBATALKAN";
+  bisaDibatalkan: boolean;
+};
+
 type SupabaseAnggotaOptionRow = {
   no_anggota: string;
   nama_lengkap: string;
@@ -58,14 +76,14 @@ type SupabaseTagihanRow = {
   nominal_tagihan: number | string;
   nominal_terbayar: number | string;
   status_tagihan: string;
-  anggota: Array<{
+  anggota: RelationValue<{
     no_anggota: string;
     nama_lengkap: string;
-  }> | null;
-  jenis_simpanan: Array<{
+  }>;
+  jenis_simpanan: RelationValue<{
     kode: string;
     nama: string;
-  }> | null;
+  }>;
 };
 
 type SupabaseTransaksiRow = {
@@ -77,18 +95,43 @@ type SupabaseTransaksiRow = {
   metode_bayar: string | null;
   nominal: number | string;
   keterangan: string | null;
-  anggota: Array<{
+  created_by?: string | null;
+  anggota: RelationValue<{
     no_anggota: string;
     nama_lengkap: string;
-  }> | null;
-  jenis_simpanan: Array<{
+  }>;
+  jenis_simpanan: RelationValue<{
     kode: string;
     nama: string;
-  }> | null;
+  }>;
 };
 
 function toNumber(value: number | string | null | undefined) {
   return Number(value ?? 0);
+}
+
+function pickSingleRelation<T>(value: RelationValue<T> | undefined): T | null {
+  if (!value) {
+    return null;
+  }
+
+  return Array.isArray(value) ? value[0] ?? null : value;
+}
+
+function isPembayaranDibatalkan(keterangan: string | null | undefined) {
+  return (keterangan ?? "").toUpperCase().includes("[DIBATALKAN");
+}
+
+function isPembayaranAuto(row: SupabaseTransaksiRow) {
+  const keterangan = row.keterangan ?? "";
+  const createdBy = (row.created_by ?? "").trim().toLowerCase();
+
+  return (
+    row.metode_bayar === "DEBET_SALDO" ||
+    createdBy === "system" ||
+    /pelunasan otomatis/i.test(keterangan) ||
+    /auto alokasi titipan/i.test(keterangan)
+  );
 }
 
 export async function getPembayaranSimpananData() {
@@ -99,11 +142,12 @@ export async function getPembayaranSimpananData() {
       anggotaOptions: [] as PembayaranOption[],
       jenisSimpananOptions: [] as JenisSimpananOption[],
       tagihanTerbuka: [] as TagihanTerbukaItem[],
+      pembayaranTerbaru: [] as PembayaranTagihanItem[],
       transaksiTerbaru: [] as TransaksiSimpananItem[],
     };
   }
 
-  const [anggotaResult, jenisResult, tagihanResult, transaksiResult] = await Promise.all([
+  const [anggotaResult, jenisResult, tagihanResult, pembayaranResult, transaksiResult] = await Promise.all([
     supabase
       .from("anggota")
       .select("no_anggota,nama_lengkap")
@@ -125,10 +169,19 @@ export async function getPembayaranSimpananData() {
     supabase
       .from("transaksi_simpanan")
       .select(
-        "id,no_transaksi,tanggal_transaksi,model_transaksi,tipe_transaksi,metode_bayar,nominal,keterangan,anggota:anggota_id(no_anggota,nama_lengkap),jenis_simpanan:jenis_simpanan_id(kode,nama)",
+        "id,no_transaksi,tanggal_transaksi,tipe_transaksi,metode_bayar,nominal,keterangan,created_by,anggota:anggota_id(no_anggota,nama_lengkap),jenis_simpanan:jenis_simpanan_id(kode,nama)",
+      )
+      .eq("model_transaksi", "PEMBAYARAN_TAGIHAN")
+      .eq("tipe_transaksi", "SETOR")
+      .order("tanggal_transaksi", { ascending: false })
+      .limit(24),
+    supabase
+      .from("transaksi_simpanan")
+      .select(
+        "id,no_transaksi,tanggal_transaksi,model_transaksi,tipe_transaksi,metode_bayar,nominal,keterangan,created_by,anggota:anggota_id(no_anggota,nama_lengkap),jenis_simpanan:jenis_simpanan_id(kode,nama)",
       )
       .order("tanggal_transaksi", { ascending: false })
-      .limit(12),
+      .limit(24),
   ]);
 
   const anggotaOptions = (anggotaResult.data ?? []).map(
@@ -147,42 +200,77 @@ export async function getPembayaranSimpananData() {
   );
 
   const tagihanTerbuka = ((tagihanResult.data ?? []) as unknown as SupabaseTagihanRow[]).map(
-    (item): TagihanTerbukaItem => ({
-      id: item.id,
-      noTagihan: item.no_tagihan,
-      noAnggota: item.anggota?.[0]?.no_anggota ?? "-",
-      namaLengkap: item.anggota?.[0]?.nama_lengkap ?? "-",
-      kodeSimpanan: item.jenis_simpanan?.[0]?.kode ?? "-",
-      namaSimpanan: item.jenis_simpanan?.[0]?.nama ?? "-",
-      periodeLabel: item.periode_label,
-      nominalTagihan: toNumber(item.nominal_tagihan),
-      nominalTerbayar: toNumber(item.nominal_terbayar),
-      sisaTagihan: toNumber(item.nominal_tagihan) - toNumber(item.nominal_terbayar),
-      statusTagihan: item.status_tagihan,
-    }),
+    (item): TagihanTerbukaItem => {
+      const anggota = pickSingleRelation(item.anggota);
+      const jenisSimpanan = pickSingleRelation(item.jenis_simpanan);
+
+      return {
+        id: item.id,
+        noTagihan: item.no_tagihan,
+        noAnggota: anggota?.no_anggota ?? "-",
+        namaLengkap: anggota?.nama_lengkap ?? "-",
+        kodeSimpanan: jenisSimpanan?.kode ?? "-",
+        namaSimpanan: jenisSimpanan?.nama ?? "-",
+        periodeLabel: item.periode_label,
+        nominalTagihan: toNumber(item.nominal_tagihan),
+        nominalTerbayar: toNumber(item.nominal_terbayar),
+        sisaTagihan: toNumber(item.nominal_tagihan) - toNumber(item.nominal_terbayar),
+        statusTagihan: item.status_tagihan,
+      };
+    },
+  );
+
+  const pembayaranTerbaru = ((pembayaranResult.data ?? []) as unknown as SupabaseTransaksiRow[]).map(
+    (item): PembayaranTagihanItem => {
+      const anggota = pickSingleRelation(item.anggota);
+      const jenisSimpanan = pickSingleRelation(item.jenis_simpanan);
+      const dibatalkan = isPembayaranDibatalkan(item.keterangan);
+
+      return {
+        id: item.id,
+        noTransaksi: item.no_transaksi,
+        tanggalTransaksi: item.tanggal_transaksi,
+        noAnggota: anggota?.no_anggota ?? "-",
+        namaLengkap: anggota?.nama_lengkap ?? "-",
+        kodeSimpanan: jenisSimpanan?.kode ?? "-",
+        namaSimpanan: jenisSimpanan?.nama ?? "-",
+        tipeTransaksi: item.tipe_transaksi,
+        metodeBayar: item.metode_bayar,
+        nominal: toNumber(item.nominal),
+        keterangan: item.keterangan,
+        statusPembayaran: dibatalkan ? "DIBATALKAN" : "AKTIF",
+        bisaDibatalkan: !dibatalkan && !isPembayaranAuto(item),
+      };
+    },
   );
 
   const transaksiTerbaru = ((transaksiResult.data ?? []) as unknown as SupabaseTransaksiRow[]).map(
-    (item): TransaksiSimpananItem => ({
-      id: item.id,
-      noTransaksi: item.no_transaksi,
-      tanggalTransaksi: item.tanggal_transaksi,
-      noAnggota: item.anggota?.[0]?.no_anggota ?? "-",
-      namaLengkap: item.anggota?.[0]?.nama_lengkap ?? "-",
-      kodeSimpanan: item.jenis_simpanan?.[0]?.kode ?? "-",
-      namaSimpanan: item.jenis_simpanan?.[0]?.nama ?? "-",
-      modelTransaksi: item.model_transaksi,
-      tipeTransaksi: item.tipe_transaksi,
-      metodeBayar: item.metode_bayar,
-      nominal: toNumber(item.nominal),
-      keterangan: item.keterangan,
-    }),
+    (item): TransaksiSimpananItem => {
+      const anggota = pickSingleRelation(item.anggota);
+      const jenisSimpanan = pickSingleRelation(item.jenis_simpanan);
+
+      return {
+        id: item.id,
+        noTransaksi: item.no_transaksi,
+        tanggalTransaksi: item.tanggal_transaksi,
+        noAnggota: anggota?.no_anggota ?? "-",
+        namaLengkap: anggota?.nama_lengkap ?? "-",
+        kodeSimpanan: jenisSimpanan?.kode ?? "-",
+        namaSimpanan: jenisSimpanan?.nama ?? "-",
+        modelTransaksi: item.model_transaksi,
+        tipeTransaksi: item.tipe_transaksi,
+        metodeBayar: item.metode_bayar,
+        nominal: toNumber(item.nominal),
+        keterangan: item.keterangan,
+      };
+    },
   );
 
   return {
     anggotaOptions,
     jenisSimpananOptions,
     tagihanTerbuka,
+    pembayaranTerbaru,
     transaksiTerbaru,
   };
 }

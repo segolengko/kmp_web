@@ -1,3 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-kmp-bg: #071114;
+  --color-kmp-surface: #0d171c;
+  --color-kmp-panel: #121b24;
+  --color-kmp-line: rgba(226, 232, 240, 0.1);
+  --color-kmp-text: #f3efe5;
+  --color-kmp-muted: #98a6b3;
+  --color-kmp-accent: #33d1c6;
+  --color-kmp-accent-strong: #14b8a6;
+  --color-kmp-warning: #f4b942;
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+}
+
 :root {
   --bg: #071114;
   --surface: rgba(10, 18, 23, 0.76);
@@ -32,6 +48,14 @@ body {
     radial-gradient(circle at 50% 100%, rgba(36, 72, 94, 0.3), transparent 35%),
     linear-gradient(140deg, #071114 0%, #0a1820 40%, #101723 100%);
   font-family: var(--font-sans), sans-serif;
+}
+
+body[data-tailwind-ready="true"] {
+  background:
+    radial-gradient(circle at top left, rgba(51, 209, 198, 0.16), transparent 30%),
+    radial-gradient(circle at 88% 8%, rgba(244, 185, 66, 0.14), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(36, 72, 94, 0.3), transparent 35%),
+    linear-gradient(140deg, #071114 0%, #0a1820 40%, #101723 100%);
 }
 
 html::-webkit-scrollbar,

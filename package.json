@@ -16,9 +16,12 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^24.5.2",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3"
   }
 }

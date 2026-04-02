@@ -1,0 +1,164 @@
+.page {
+  min-height: 100vh;
+  padding: 24px 0 40px;
+}
+
+.shell {
+  display: grid;
+  gap: 18px;
+}
+
+.paper {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 60mm 16mm 20mm;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+}
+
+.meta {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: 150px 12px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.opening {
+  margin: 0 0 16px;
+  white-space: pre-line;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #111827;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+.table th {
+  text-align: center;
+  font-weight: 700;
+}
+
+.cellNumber,
+.cellQty,
+.cellCurrency {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.totals {
+  display: grid;
+  gap: 4px;
+  margin-left: auto;
+  width: min(100%, 340px);
+  font-size: 14px;
+}
+
+.totalRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 14px 150px;
+  gap: 8px;
+}
+
+.totalRow strong,
+.totalRow span:last-child {
+  font-weight: 700;
+}
+
+.terbilang {
+  margin: 14px 0 22px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.signatureWrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signatureGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.signatureGridThree {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.signatureBox {
+  width: 300px;
+  display: grid;
+  gap: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.signatureSpace {
+  height: 78px;
+}
+
+.signatureName {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.note {
+  color: #6b7280;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .paper {
+    width: 100%;
+    min-height: auto;
+    padding: 60mm 16px 28px;
+  }
+
+  .signatureGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .signatureGridThree {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .page {
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .paper {
+    width: auto;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}

@@ -145,26 +145,35 @@ export function GenerateWajibPanel({ batches }: Props) {
           <span>Buat tagihan simpanan wajib untuk satu periode</span>
         </div>
         <form className={styles.managementForm} onSubmit={handleSubmit}>
-          <div className={styles.gridCompact}>
-            <div className={styles.field}>
-              <label htmlFor="periode-generate">Periode Generate</label>
-              <input
-                id="periode-generate"
-                onChange={(event) => setTanggalProses(event.target.value)}
-                type="month"
-                value={tanggalProses}
-              />
+          <fieldset className={`${styles.section} ${styles.formSectionCard}`}>
+            <legend className={styles.formSectionLegend}>Parameter</legend>
+            <div className={styles.formSectionIntro}>
+              <h2>Parameter Generate</h2>
+              <span>Tentukan periode dan operator sebelum batch dijalankan</span>
             </div>
-            <div className={styles.field}>
-              <label htmlFor="dibuat-oleh-generate">Diproses Oleh</label>
-              <input
-                id="dibuat-oleh-generate"
-                onChange={(event) => setDibuatOleh(event.target.value)}
-                type="text"
-                value={dibuatOleh}
-              />
+
+            <div className={styles.gridCompact}>
+              <div className={styles.field}>
+                <label htmlFor="periode-generate">Periode Generate</label>
+                <input
+                  id="periode-generate"
+                  onChange={(event) => setTanggalProses(event.target.value)}
+                  type="month"
+                  value={tanggalProses}
+                />
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="dibuat-oleh-generate">Diproses Oleh</label>
+                <input
+                  id="dibuat-oleh-generate"
+                  onChange={(event) => setDibuatOleh(event.target.value)}
+                  type="text"
+                  value={dibuatOleh}
+                />
+              </div>
             </div>
-          </div>
+          </fieldset>
+
           <div className={styles.formActions}>
             <button className={styles.saveButton} disabled={isSubmitting} type="submit">
               {isSubmitting

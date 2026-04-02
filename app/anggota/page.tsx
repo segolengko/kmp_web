@@ -74,7 +74,7 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
       item.noAnggota.toLowerCase().includes(keyword) ||
       item.namaLengkap.toLowerCase().includes(keyword) ||
       item.departemen.toLowerCase().includes(keyword) ||
-      item.jabatan.toLowerCase().includes(keyword);
+      item.statusAnggota.toLowerCase().includes(keyword);
 
     const matchesJenis = jenis.length === 0 || item.jenisAnggota === jenis;
     const matchesStatus = status.length === 0 || item.statusAnggota === status;
@@ -91,6 +91,9 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
   const visibleAnggota = filteredAnggota.slice(startIndex, startIndex + PAGE_SIZE);
   const firstItem = totalItems === 0 ? 0 : startIndex + 1;
   const lastItem = totalItems === 0 ? 0 : Math.min(startIndex + PAGE_SIZE, totalItems);
+  const totalAktif = filteredAnggota.filter((item) => item.statusAnggota === "AKTIF").length;
+  const totalPasif = filteredAnggota.filter((item) => item.statusAnggota === "PASIF").length;
+  const totalKeluar = filteredAnggota.filter((item) => item.statusAnggota === "KELUAR").length;
 
   const currentParams = { q, jenis, status, departemen };
 
@@ -102,33 +105,55 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
       title="Daftar Anggota"
     >
       <section className={styles.listPanel}>
-          <div className={styles.listActions}>
-            <div className={styles.summaryGroup}>
-              <div className={styles.summaryBadge}>{totalItems} anggota ditemukan</div>
-              <div
-                className={`${styles.sourceBadge} ${
-                  anggotaResult.source === "supabase" ? styles.sourceLive : styles.sourceMock
-                }`}
-              >
-                {anggotaResult.source === "supabase" ? "Supabase Live" : "Mode Demo"}
+        <section className="grid gap-4 rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02)),rgba(8,14,22,0.78)] p-5 shadow-[var(--shadow)]">
+          <div className="flex flex-wrap items-center justify-between gap-5">
+            <div className="grid gap-2">
+              <div className={styles.summaryGroup}>
+                <div className={styles.summaryBadge}>{totalItems} anggota ditemukan</div>
+                <div
+                  className={`${styles.sourceBadge} ${
+                    anggotaResult.source === "supabase" ? styles.sourceLive : styles.sourceMock
+                  }`}
+                >
+                  {anggotaResult.source === "supabase" ? "Supabase Live" : "Mode Demo"}
+                </div>
               </div>
             </div>
-            <div className={styles.actionsGroup}>
-              <AnggotaImportExportActions />
-              <Link className={styles.primaryListAction} href="/anggota/tambah">
-                Tambah Anggota
-              </Link>
-            </div>
+            <Link className={styles.primaryListAction} href="/anggota/tambah">
+              Tambah Anggota
+            </Link>
           </div>
 
-          <form className={styles.filterBar} method="get">
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <article className="grid gap-1 rounded-2xl border border-white/7 bg-white/3 px-4 py-3">
+              <span>Total Tersaring</span>
+              <strong>{totalItems}</strong>
+            </article>
+            <article className="grid gap-1 rounded-2xl border border-white/7 bg-white/3 px-4 py-3">
+              <span>Aktif</span>
+              <strong>{totalAktif}</strong>
+            </article>
+            <article className="grid gap-1 rounded-2xl border border-white/7 bg-white/3 px-4 py-3">
+              <span>Pasif</span>
+              <strong>{totalPasif}</strong>
+            </article>
+            <article className="grid gap-1 rounded-2xl border border-white/7 bg-white/3 px-4 py-3">
+              <span>Keluar</span>
+              <strong>{totalKeluar}</strong>
+            </article>
+          </div>
+
+          <form
+            className={`${styles.filterBar} rounded-[18px] border border-white/6 bg-[rgba(10,16,24,0.78)] p-3`}
+            method="get"
+          >
             <div className={styles.searchField}>
               <label htmlFor="q">Pencarian</label>
               <input
                 defaultValue={q}
                 id="q"
                 name="q"
-                placeholder="Cari no anggota, nama, departemen, jabatan"
+                placeholder="Cari no anggota, nama, departemen, status"
                 type="search"
               />
             </div>
@@ -183,8 +208,10 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
               </Link>
             </div>
           </form>
+        </section>
 
-          <div className={styles.tableMeta}>
+        <section className="grid gap-4 rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.015)),rgba(8,14,22,0.86)] p-4 shadow-[var(--shadow)]">
+          <div className={`${styles.tableMeta} px-1 text-[0.84rem] uppercase tracking-[0.04em]`}>
             <span>
               Menampilkan {firstItem}-{lastItem} dari {totalItems} anggota
             </span>
@@ -193,8 +220,8 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
             </span>
           </div>
 
-          <div className={styles.tableWrap}>
-            <table className={styles.table}>
+          <div className={`${styles.tableWrap} rounded-2xl bg-[rgba(7,12,19,0.82)]`}>
+            <table className={`${styles.table} min-w-[1080px]`}>
               <thead>
                 <tr>
                   <th>Foto</th>
@@ -202,15 +229,14 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
                   <th>Nama</th>
                   <th>Jenis</th>
                   <th>Status</th>
-                  <th>Departemen</th>
-                  <th>No. HP</th>
+                  <th className={styles.departemenCell}>Departemen</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {visibleAnggota.length === 0 ? (
                   <tr>
-                    <td className={styles.emptyCell} colSpan={8}>
+                    <td className={styles.emptyCell} colSpan={7}>
                       Tidak ada anggota yang cocok dengan filter saat ini.
                     </td>
                   </tr>
@@ -233,7 +259,12 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
                         </div>
                       </td>
                       <td>{item.noAnggota}</td>
-                      <td className={styles.nameCell}>{item.namaLengkap}</td>
+                      <td className={styles.nameCell}>
+                        <div className={styles.tableIdentity}>
+                          <strong>{item.namaLengkap}</strong>
+                          <span>{item.noHp}</span>
+                        </div>
+                      </td>
                       <td>{toLabelJenis(item.jenisAnggota)}</td>
                       <td>
                         <span
@@ -248,8 +279,7 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
                           {item.statusAnggota}
                         </span>
                       </td>
-                      <td>{item.departemen}</td>
-                      <td>{item.noHp}</td>
+                      <td className={styles.departemenCell}>{item.departemen}</td>
                       <td>
                         <div className={styles.rowActions}>
                           <Link
@@ -317,8 +347,8 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
                   </div>
                   <div className={styles.mobileMeta}>
                     <span>Jenis: {toLabelJenis(item.jenisAnggota)}</span>
+                    <span>Status: {item.statusAnggota}</span>
                     <span>Departemen: {item.departemen}</span>
-                    <span>HP: {item.noHp}</span>
                   </div>
                   <div className={styles.mobileActions}>
                     <Link
@@ -376,6 +406,16 @@ export default async function AnggotaPage({ searchParams }: AnggotaPageProps) {
               Berikutnya
             </Link>
           </div>
+
+          <div className={styles.listActions}>
+            <div className={styles.summaryGroup}>
+              <div className={styles.summaryBadge}>Import / Export Data Anggota</div>
+            </div>
+            <div className={styles.actionsGroup}>
+              <AnggotaImportExportActions />
+            </div>
+          </div>
+        </section>
       </section>
     </OpsShell>
   );

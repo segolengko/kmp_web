@@ -75,7 +75,7 @@ export default async function JenisSimpananPage({ searchParams }: PageProps) {
                 Semua Master
               </Link>
               <Link className={styles.primaryListAction} href="/master/jenis-simpanan/tambah">
-                Tambah Jenis
+                Tambah Jenis Simpanan
               </Link>
             </div>
           </div>

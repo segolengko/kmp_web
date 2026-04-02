@@ -25,7 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={`${manrope.variable} ${outfit.variable}`}>
+      <body
+        className={`${manrope.variable} ${outfit.variable} bg-[var(--bg)] text-[var(--text)] antialiased`}
+        data-tailwind-ready="true"
+      >
         {children}
       </body>
     </html>

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { DarkSelect } from "@/components/dark-select";
-import { KoperasiLogo } from "@/components/koperasi-logo";
+import { NumericInput } from "@/components/numeric-input";
 import type { JenisSimpananItem } from "@/lib/jenis-simpanan-data";
 import type { PengaturanSimpananItem } from "@/lib/pengaturan-simpanan-data";
 import styles from "@/app/anggota/page.module.css";
@@ -108,7 +108,6 @@ export function PengaturanSimpananForm({
             </div>
 
             <div className={styles.header}>
-              <KoperasiLogo compact iconOnly />
               <h1>{mode === "create" ? "Tambah Pengaturan Simpanan" : "Edit Pengaturan Simpanan"}</h1>
               <p>Atur nominal dan periode berlaku master simpanan koperasi, baik untuk semua anggota maupun khusus per segmen keanggotaan.</p>
             </div>
@@ -116,7 +115,12 @@ export function PengaturanSimpananForm({
             {errorMessage ? <div className={styles.errorBanner}>{errorMessage}</div> : null}
 
             <form className={styles.formStack} onSubmit={handleSubmit}>
-              <section className={styles.section}>
+              <fieldset className={`${styles.section} ${styles.formSectionCard}`}>
+                <legend className={styles.formSectionLegend}>Pengaturan Simpanan</legend>
+                <div className={styles.formSectionIntro}>
+                  <h2>Parameter Berlaku</h2>
+                  <span>Nominal, segmen anggota, dan periode aktif pengaturan</span>
+                </div>
                 <div className={styles.gridCompact}>
                   <div className={styles.field}>
                     <label htmlFor="jenisSimpananId">Jenis Simpanan</label>
@@ -153,7 +157,12 @@ export function PengaturanSimpananForm({
                   </div>
                   <div className={styles.field}>
                     <label htmlFor="nominal">Nominal</label>
-                    <input id="nominal" onChange={(e) => updateField("nominal", e.target.value)} type="number" value={form.nominal} />
+                    <NumericInput
+                      currency
+                      id="nominal"
+                      onChange={(value) => updateField("nominal", value)}
+                      value={form.nominal}
+                    />
                   </div>
                   <div className={styles.field}>
                     <label htmlFor="berlakuMulai">Berlaku Mulai</label>
@@ -180,7 +189,7 @@ export function PengaturanSimpananForm({
                     <textarea id="keterangan" onChange={(e) => updateField("keterangan", e.target.value)} value={form.keterangan} />
                   </div>
                 </div>
-              </section>
+              </fieldset>
 
               <div className={styles.formActions}>
                 <Link className={styles.resetButton} href="/master/pengaturan-simpanan">

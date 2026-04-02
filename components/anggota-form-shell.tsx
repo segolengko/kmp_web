@@ -4,7 +4,6 @@ import type { ChangeEvent, FormEvent } from "react";
 import { startTransition, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { KoperasiLogo } from "@/components/koperasi-logo";
 import { DarkSelect } from "@/components/dark-select";
 import type { AnggotaItem } from "@/lib/mock-anggota";
 import styles from "@/app/anggota/page.module.css";
@@ -13,8 +12,6 @@ type AnggotaFormShellProps = {
   mode: "create" | "edit";
   initialData?: AnggotaItem | null;
 };
-
-type FormSectionKey = "identitas" | "kerja" | "kontak";
 
 type FormState = {
   noAnggota: string;
@@ -34,28 +31,6 @@ type FormState = {
   alamat: string;
   catatan: string;
 };
-
-const FORM_SECTIONS: Array<{
-  key: FormSectionKey;
-  label: string;
-  description: string;
-}> = [
-  {
-    key: "identitas",
-    label: "Identitas",
-    description: "Data dasar keanggotaan",
-  },
-  {
-    key: "kerja",
-    label: "Data Kerja",
-    description: "Relasi anggota dengan perusahaan",
-  },
-  {
-    key: "kontak",
-    label: "Kontak & Foto",
-    description: "Alamat, komunikasi, dan foto",
-  },
-];
 
 const JENIS_KELAMIN_OPTIONS = [
   { label: "Laki-laki", value: "LAKI_LAKI" },
@@ -114,7 +89,6 @@ export function AnggotaFormShell({
 }: AnggotaFormShellProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [activeSection, setActiveSection] = useState<FormSectionKey>("identitas");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -247,7 +221,6 @@ export function AnggotaFormShell({
             </div>
 
             <div className={styles.header}>
-              <KoperasiLogo compact iconOnly />
               <h1>{title}</h1>
               <p>{description}</p>
             </div>
@@ -255,296 +228,250 @@ export function AnggotaFormShell({
             {errorMessage ? <div className={styles.errorBanner}>{errorMessage}</div> : null}
 
             <form className={styles.formStack} id="anggota-form" onSubmit={handleSubmit}>
-              <div className={styles.formActions}>
-                <div className={styles.sectionTabs}>
-                  {FORM_SECTIONS.map((section) => (
-                    <button
-                      className={`${styles.sectionTab} ${
-                        activeSection === section.key ? styles.sectionTabActive : ""
-                      }`}
-                      key={section.key}
-                      onClick={() => setActiveSection(section.key)}
-                      type="button"
-                    >
-                      <strong>{section.label}</strong>
-                      <span>{section.description}</span>
-                    </button>
-                  ))}
+              <fieldset className={`${styles.section} ${styles.formSectionCard}`}>
+                <legend className={styles.formSectionLegend}>Identitas</legend>
+                <div className={styles.formSectionIntro}>
+                  <h2>Identitas Anggota</h2>
+                  <span>Data dasar keanggotaan</span>
                 </div>
 
-                <button
-                  className={styles.saveButton}
-                  disabled={isSubmitting || isUploadingPhoto}
-                  type="submit"
-                >
-                  {isUploadingPhoto
-                    ? "Menunggu Upload Foto..."
-                    : isSubmitting
-                      ? "Menyimpan..."
-                      : submitLabel}
-                </button>
-              </div>
-
-              {activeSection === "identitas" ? (
-                <section className={styles.section}>
-                  <div className={styles.sectionHeader}>
-                    <h2>Identitas Anggota</h2>
-                    <span>Data dasar keanggotaan</span>
+                <div className={styles.gridCompact}>
+                  <div className={styles.field}>
+                    <label htmlFor="no-anggota">No. Anggota</label>
+                    <input
+                      id="no-anggota"
+                      name="noAnggota"
+                      onChange={(event) => updateField("noAnggota", event.target.value)}
+                      placeholder="Contoh: AG0004"
+                      type="text"
+                      value={form.noAnggota}
+                    />
                   </div>
-
-                  <div className={styles.gridCompact}>
-                    <div className={styles.field}>
-                      <label htmlFor="no-anggota">No. Anggota</label>
-                      <input
-                        id="no-anggota"
-                        name="noAnggota"
-                        onChange={(event) => updateField("noAnggota", event.target.value)}
-                        placeholder="Contoh: AG0004"
-                        type="text"
-                        value={form.noAnggota}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="nama-lengkap">Nama Lengkap</label>
-                      <input
-                        id="nama-lengkap"
-                        name="namaLengkap"
-                        onChange={(event) => updateField("namaLengkap", event.target.value)}
-                        placeholder="Nama lengkap anggota"
-                        type="text"
-                        value={form.namaLengkap}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="jenis-kelamin">Jenis Kelamin</label>
-                      <DarkSelect
-                        id="jenis-kelamin"
-                        name="jenisKelamin"
-                        onChange={(value) =>
-                          updateField(
-                            "jenisKelamin",
-                            value as FormState["jenisKelamin"],
-                          )
-                        }
-                        options={[...JENIS_KELAMIN_OPTIONS]}
-                        value={form.jenisKelamin}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="jenis-anggota">Jenis Anggota</label>
-                      <DarkSelect
-                        id="jenis-anggota"
-                        name="jenisAnggota"
-                        onChange={(value) =>
-                          updateField(
-                            "jenisAnggota",
-                            value as FormState["jenisAnggota"],
-                          )
-                        }
-                        options={[...JENIS_ANGGOTA_OPTIONS]}
-                        value={form.jenisAnggota}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="status-anggota">Status Anggota</label>
-                      <DarkSelect
-                        id="status-anggota"
-                        name="statusAnggota"
-                        onChange={(value) =>
-                          updateField(
-                            "statusAnggota",
-                            value as FormState["statusAnggota"],
-                          )
-                        }
-                        options={[...STATUS_ANGGOTA_OPTIONS]}
-                        value={form.statusAnggota}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="no-ktp">No. KTP</label>
-                      <input
-                        id="no-ktp"
-                        name="nik"
-                        onChange={(event) => updateField("nik", event.target.value)}
-                        placeholder="16 digit nomor KTP"
-                        type="text"
-                        value={form.nik}
-                      />
-                    </div>
+                  <div className={styles.field}>
+                    <label htmlFor="nama-lengkap">Nama Lengkap</label>
+                    <input
+                      id="nama-lengkap"
+                      name="namaLengkap"
+                      onChange={(event) => updateField("namaLengkap", event.target.value)}
+                      placeholder="Nama lengkap anggota"
+                      type="text"
+                      value={form.namaLengkap}
+                    />
                   </div>
-                </section>
-              ) : null}
-
-              {activeSection === "kerja" ? (
-                <section className={styles.section}>
-                  <div className={styles.sectionHeader}>
-                    <h2>Data Kerja</h2>
-                    <span>Relasi anggota dengan perusahaan</span>
+                  <div className={styles.field}>
+                    <label htmlFor="jenis-kelamin">Jenis Kelamin</label>
+                    <DarkSelect
+                      id="jenis-kelamin"
+                      name="jenisKelamin"
+                      onChange={(value) =>
+                        updateField("jenisKelamin", value as FormState["jenisKelamin"])
+                      }
+                      options={[...JENIS_KELAMIN_OPTIONS]}
+                      value={form.jenisKelamin}
+                    />
                   </div>
-
-                  <div className={styles.gridCompact}>
-                    <div className={styles.field}>
-                      <label htmlFor="departemen">Departemen</label>
-                      <input
-                        id="departemen"
-                        name="departemen"
-                        onChange={(event) => updateField("departemen", event.target.value)}
-                        placeholder="Finance / HR / Operasional"
-                        type="text"
-                        value={form.departemen}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="jabatan">Jabatan</label>
-                      <input
-                        id="jabatan"
-                        name="jabatan"
-                        onChange={(event) => updateField("jabatan", event.target.value)}
-                        placeholder="Staff / Supervisor / Officer"
-                        type="text"
-                        value={form.jabatan}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="tgl-masuk-kerja">Tanggal Masuk Kerja</label>
-                      <input
-                        id="tgl-masuk-kerja"
-                        name="tanggalMasukKerja"
-                        onChange={(event) =>
-                          updateField("tanggalMasukKerja", event.target.value)
-                        }
-                        type="date"
-                        value={form.tanggalMasukKerja}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="tgl-masuk-koperasi">Tanggal Masuk Koperasi</label>
-                      <input
-                        id="tgl-masuk-koperasi"
-                        name="tanggalMasukKoperasi"
-                        onChange={(event) =>
-                          updateField("tanggalMasukKoperasi", event.target.value)
-                        }
-                        type="date"
-                        value={form.tanggalMasukKoperasi}
-                      />
-                    </div>
+                  <div className={styles.field}>
+                    <label htmlFor="jenis-anggota">Jenis Anggota</label>
+                    <DarkSelect
+                      id="jenis-anggota"
+                      name="jenisAnggota"
+                      onChange={(value) =>
+                        updateField("jenisAnggota", value as FormState["jenisAnggota"])
+                      }
+                      options={[...JENIS_ANGGOTA_OPTIONS]}
+                      value={form.jenisAnggota}
+                    />
                   </div>
-                </section>
-              ) : null}
-
-              {activeSection === "kontak" ? (
-                <section className={styles.section}>
-                  <div className={styles.sectionHeader}>
-                    <h2>Kontak & Foto</h2>
-                    <span>Akses komunikasi, alamat, dan foto anggota</span>
+                  <div className={styles.field}>
+                    <label htmlFor="status-anggota">Status Anggota</label>
+                    <DarkSelect
+                      id="status-anggota"
+                      name="statusAnggota"
+                      onChange={(value) =>
+                        updateField("statusAnggota", value as FormState["statusAnggota"])
+                      }
+                      options={[...STATUS_ANGGOTA_OPTIONS]}
+                      value={form.statusAnggota}
+                    />
                   </div>
-
-                  <div className={styles.inlinePhotoCard}>
-                    {photoPreview ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        alt={`Foto ${form.namaLengkap || "anggota"}`}
-                        className={styles.profilePhoto}
-                        src={photoPreview}
-                      />
-                    ) : (
-                      <div className={styles.avatar}>{getInitial(form.namaLengkap)}</div>
-                    )}
-                    <div className={styles.inlinePhotoText}>
-                      <strong>Preview Foto Anggota</strong>
-                      <p>
-                        Isi `No. Anggota` dulu, lalu upload foto. Setelah simpan, foto akan
-                        ikut tersimpan dan tampil lagi di list maupun saat edit ulang.
-                      </p>
-                    </div>
+                  <div className={styles.field}>
+                    <label htmlFor="no-ktp">No. KTP</label>
+                    <input
+                      id="no-ktp"
+                      name="nik"
+                      onChange={(event) => updateField("nik", event.target.value)}
+                      placeholder="16 digit nomor KTP"
+                      type="text"
+                      value={form.nik}
+                    />
                   </div>
+                </div>
+              </fieldset>
 
-                  <div className={styles.gridCompact}>
-                    <div className={styles.field}>
-                      <label htmlFor="hp">No. HP</label>
+              <fieldset className={`${styles.section} ${styles.formSectionCard}`}>
+                <legend className={styles.formSectionLegend}>Data Kerja</legend>
+                <div className={styles.formSectionIntro}>
+                  <h2>Data Kerja</h2>
+                  <span>Relasi anggota dengan perusahaan</span>
+                </div>
+
+                <div className={styles.gridCompact}>
+                  <div className={styles.field}>
+                    <label htmlFor="departemen">Departemen</label>
+                    <input
+                      id="departemen"
+                      name="departemen"
+                      onChange={(event) => updateField("departemen", event.target.value)}
+                      placeholder="Finance / HR / Operasional"
+                      type="text"
+                      value={form.departemen}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="jabatan">Jabatan</label>
+                    <input
+                      id="jabatan"
+                      name="jabatan"
+                      onChange={(event) => updateField("jabatan", event.target.value)}
+                      placeholder="Staff / Supervisor / Officer"
+                      type="text"
+                      value={form.jabatan}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="tgl-masuk-kerja">Tanggal Masuk Kerja</label>
+                    <input
+                      id="tgl-masuk-kerja"
+                      name="tanggalMasukKerja"
+                      onChange={(event) => updateField("tanggalMasukKerja", event.target.value)}
+                      type="date"
+                      value={form.tanggalMasukKerja}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="tgl-masuk-koperasi">Tanggal Masuk Koperasi</label>
+                    <input
+                      id="tgl-masuk-koperasi"
+                      name="tanggalMasukKoperasi"
+                      onChange={(event) => updateField("tanggalMasukKoperasi", event.target.value)}
+                      type="date"
+                      value={form.tanggalMasukKoperasi}
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset className={`${styles.section} ${styles.formSectionCard}`}>
+                <legend className={styles.formSectionLegend}>Kontak & Foto</legend>
+                <div className={styles.formSectionIntro}>
+                  <h2>Kontak & Foto</h2>
+                  <span>Akses komunikasi, alamat, dan foto anggota</span>
+                </div>
+
+                <div className={styles.inlinePhotoCard}>
+                  {photoPreview ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      alt={`Foto ${form.namaLengkap || "anggota"}`}
+                      className={styles.profilePhoto}
+                      src={photoPreview}
+                    />
+                  ) : (
+                    <div className={styles.avatar}>{getInitial(form.namaLengkap)}</div>
+                  )}
+                  <div className={styles.inlinePhotoText}>
+                    <strong>Preview Foto Anggota</strong>
+                    <p>
+                      Isi `No. Anggota` dulu, lalu upload foto. Setelah simpan, foto akan ikut
+                      tersimpan dan tampil lagi di list maupun saat edit ulang.
+                    </p>
+                  </div>
+                </div>
+
+                <div className={styles.gridCompact}>
+                  <div className={styles.field}>
+                    <label htmlFor="hp">No. HP</label>
+                    <input
+                      id="hp"
+                      name="noHp"
+                      onChange={(event) => updateField("noHp", event.target.value)}
+                      placeholder="08xxxxxxxxxx"
+                      type="text"
+                      value={form.noHp}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                      id="email"
+                      name="email"
+                      onChange={(event) => updateField("email", event.target.value)}
+                      placeholder="nama@contoh.com"
+                      type="email"
+                      value={form.email}
+                    />
+                  </div>
+                  <div className={styles.fieldFull}>
+                    <label htmlFor="foto-url">Foto URL</label>
+                    <input
+                      id="foto-url"
+                      name="fotoUrlDisplay"
+                      placeholder="URL foto akan terisi otomatis setelah upload"
+                      readOnly
+                      type="url"
+                      value={form.fotoUrl}
+                    />
+                  </div>
+                  <div className={styles.fieldFull}>
+                    <label htmlFor="foto-upload">Upload Foto</label>
+                    <div className={styles.uploadInline}>
                       <input
-                        id="hp"
-                        name="noHp"
-                        onChange={(event) => updateField("noHp", event.target.value)}
-                        placeholder="08xxxxxxxxxx"
-                        type="text"
-                        value={form.noHp}
+                        accept="image/png,image/jpeg,image/webp"
+                        className={styles.hiddenInput}
+                        id="foto-upload"
+                        onChange={handlePhotoChange}
+                        ref={fileInputRef}
+                        type="file"
                       />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="email">Email</label>
-                      <input
-                        id="email"
-                        name="email"
-                        onChange={(event) => updateField("email", event.target.value)}
-                        placeholder="nama@contoh.com"
-                        type="email"
-                        value={form.email}
-                      />
-                    </div>
-                    <div className={styles.fieldFull}>
-                      <label htmlFor="foto-url">Foto URL</label>
-                      <input
-                        id="foto-url"
-                        name="fotoUrlDisplay"
-                        placeholder="URL foto akan terisi otomatis setelah upload"
-                        readOnly
-                        type="url"
-                        value={form.fotoUrl}
-                      />
-                    </div>
-                    <div className={styles.fieldFull}>
-                      <label htmlFor="foto-upload">Upload Foto</label>
-                      <div className={styles.uploadInline}>
-                        <input
-                          accept="image/png,image/jpeg,image/webp"
-                          className={styles.hiddenInput}
-                          id="foto-upload"
-                          onChange={handlePhotoChange}
-                          ref={fileInputRef}
-                          type="file"
-                        />
-                        <button
-                          className={styles.secondaryAction}
-                          onClick={() => fileInputRef.current?.click()}
-                          type="button"
-                        >
-                          {isUploadingPhoto ? "Mengupload..." : "Pilih & Upload Foto"}
-                        </button>
-                        {photoMessage ? (
-                          <span className={styles.photoHint}>{photoMessage}</span>
-                        ) : (
-                          <span className={styles.photoHint}>
-                            Setelah upload selesai, klik tombol simpan agar data anggota ikut
-                            tersimpan penuh.
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className={styles.fieldFull}>
-                      <label htmlFor="alamat">Alamat</label>
-                      <textarea
-                        id="alamat"
-                        name="alamat"
-                        onChange={(event) => updateField("alamat", event.target.value)}
-                        placeholder="Alamat lengkap anggota"
-                        value={form.alamat}
-                      />
-                    </div>
-                    <div className={styles.fieldFull}>
-                      <label htmlFor="catatan">Catatan</label>
-                      <textarea
-                        id="catatan"
-                        name="catatan"
-                        onChange={(event) => updateField("catatan", event.target.value)}
-                        placeholder="Catatan tambahan bila diperlukan"
-                        value={form.catatan}
-                      />
+                      <button
+                        className={styles.secondaryAction}
+                        onClick={() => fileInputRef.current?.click()}
+                        type="button"
+                      >
+                        {isUploadingPhoto ? "Mengupload..." : "Pilih & Upload Foto"}
+                      </button>
+                      {photoMessage ? (
+                        <span className={styles.photoHint}>{photoMessage}</span>
+                      ) : (
+                        <span className={styles.photoHint}>
+                          Setelah upload selesai, klik tombol simpan agar data anggota ikut
+                          tersimpan penuh.
+                        </span>
+                      )}
                     </div>
                   </div>
-                </section>
-              ) : null}
+                  <div className={styles.fieldFull}>
+                    <label htmlFor="alamat">Alamat</label>
+                    <textarea
+                      id="alamat"
+                      name="alamat"
+                      onChange={(event) => updateField("alamat", event.target.value)}
+                      placeholder="Alamat lengkap anggota"
+                      value={form.alamat}
+                    />
+                  </div>
+                  <div className={styles.fieldFull}>
+                    <label htmlFor="catatan">Catatan</label>
+                    <textarea
+                      id="catatan"
+                      name="catatan"
+                      onChange={(event) => updateField("catatan", event.target.value)}
+                      placeholder="Catatan tambahan bila diperlukan"
+                      value={form.catatan}
+                    />
+                  </div>
+                </div>
+              </fieldset>
 
               <div className={styles.formActions}>
                 <Link className={styles.resetButton} href="/anggota">

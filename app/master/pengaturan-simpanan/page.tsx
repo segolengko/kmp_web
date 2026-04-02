@@ -83,7 +83,7 @@ export default async function PengaturanSimpananPage({ searchParams }: PageProps
                 className={styles.primaryListAction}
                 href="/master/pengaturan-simpanan/tambah"
               >
-                Tambah Pengaturan
+                Tambah Pengaturan Simpanan
               </Link>
             </div>
           </div>

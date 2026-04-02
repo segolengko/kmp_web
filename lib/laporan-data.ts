@@ -143,6 +143,7 @@ export async function getLaporanSimpananData(tahun: number = new Date().getFullY
       saldoItems: [] as SaldoSimpananReportItem[],
       tunggakanItems: [] as TunggakanSimpananReportItem[],
       annualItems: [] as LaporanIuranTahunanItem[],
+      departemenOptions: [] as string[],
     };
   }
 
@@ -226,6 +227,14 @@ export async function getLaporanSimpananData(tahun: number = new Date().getFullY
     }),
   );
 
+  const departemenOptions = Array.from(
+    new Set(
+      ((anggotaTahunanResult.data ?? []) as unknown as SupabaseAnggotaTahunanRow[]).map(
+        (row) => row.departemen?.trim() || "-",
+      ),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+
   const annualMap = new Map<number, LaporanIuranTahunanItem>();
 
   for (const row of ((anggotaTahunanResult.data ?? []) as unknown as SupabaseAnggotaTahunanRow[])) {
@@ -273,5 +282,6 @@ export async function getLaporanSimpananData(tahun: number = new Date().getFullY
     saldoItems,
     tunggakanItems,
     annualItems,
+    departemenOptions,
   };
 }

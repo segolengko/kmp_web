@@ -1,9 +1,32 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { KoperasiLogo } from "@/components/koperasi-logo";
 import { LoginForm } from "@/components/login-form";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
 
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams?: Promise<{
+    next?: string;
+  }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const params = (await searchParams) ?? {};
+  const supabase = await createSupabaseServerClient();
+
+  if (supabase) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const destination =
+        params.next && params.next.startsWith("/") ? params.next : "/dashboard";
+      redirect(destination);
+    }
+  }
+
   return (
     <main className={`page-shell ${styles.loginPage}`}>
       <div className={`container ${styles.loginGrid}`}>
@@ -12,11 +35,11 @@ export default function LoginPage() {
           <Link className={styles.back} href="/">
             Kembali ke beranda
           </Link>
-          <h1>Masuk dan lanjutkan operasional koperasi tanpa ribet.</h1>
+          <h1>Masuk dan lanjutkan operasional koperasi dengan alur yang aman.</h1>
           <p>
-            Halaman login ini disiapkan sebagai pintu masuk admin, operator,
-            dan petugas koperasi. Nanti bisa dihubungkan ke Supabase Auth atau
-            role internal sesuai kebutuhan sistem Anda.
+            Login sudah terhubung ke Supabase Auth untuk admin, operator, dan
+            petugas koperasi. Setelah berhasil masuk, sistem akan mengarahkan
+            Anda kembali ke halaman kerja yang tadi dituju.
           </p>
 
           <div className={styles.steps}>
@@ -35,7 +58,7 @@ export default function LoginPage() {
           </div>
         </section>
 
-        <LoginForm />
+        <LoginForm redirectTo={params.next} />
       </div>
     </main>
   );

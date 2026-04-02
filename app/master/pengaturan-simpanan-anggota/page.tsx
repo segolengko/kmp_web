@@ -74,7 +74,7 @@ export default async function PengaturanSimpananAnggotaPage({ searchParams }: Pa
                 className={styles.primaryListAction}
                 href="/master/pengaturan-simpanan-anggota/tambah"
               >
-                Tambah Pengaturan
+                Tambah Pengaturan Simpanan Anggota
               </Link>
             </div>
           </div>

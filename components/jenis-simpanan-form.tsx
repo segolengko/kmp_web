@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { DarkSelect } from "@/components/dark-select";
-import { KoperasiLogo } from "@/components/koperasi-logo";
+import { NumericInput } from "@/components/numeric-input";
 import type { JenisSimpananItem } from "@/lib/jenis-simpanan-data";
 import styles from "@/app/anggota/page.module.css";
 
@@ -98,7 +98,6 @@ export function JenisSimpananForm({ mode, initialData = null }: Props) {
             </div>
 
             <div className={styles.header}>
-              <KoperasiLogo compact iconOnly />
               <h1>{mode === "create" ? "Tambah Jenis Simpanan" : "Edit Jenis Simpanan"}</h1>
               <p>Master ini menentukan sifat dasar simpanan di seluruh modul koperasi.</p>
             </div>
@@ -106,7 +105,12 @@ export function JenisSimpananForm({ mode, initialData = null }: Props) {
             {errorMessage ? <div className={styles.errorBanner}>{errorMessage}</div> : null}
 
             <form className={styles.formStack} onSubmit={handleSubmit}>
-              <section className={styles.section}>
+              <fieldset className={`${styles.section} ${styles.formSectionCard}`}>
+                <legend className={styles.formSectionLegend}>Konfigurasi Jenis Simpanan</legend>
+                <div className={styles.formSectionIntro}>
+                  <h2>Parameter Dasar</h2>
+                  <span>Atur sifat, model pencatatan, dan perilaku default simpanan</span>
+                </div>
                 <div className={styles.gridCompact}>
                   <div className={styles.field}>
                     <label htmlFor="kode">Kode</label>
@@ -162,10 +166,10 @@ export function JenisSimpananForm({ mode, initialData = null }: Props) {
                   </div>
                   <div className={styles.field}>
                     <label htmlFor="nominalDefault">Nominal Default</label>
-                    <input
+                    <NumericInput
+                      currency
                       id="nominalDefault"
-                      onChange={(e) => updateField("nominalDefault", e.target.value)}
-                      type="number"
+                      onChange={(value) => updateField("nominalDefault", value)}
                       value={form.nominalDefault}
                     />
                   </div>
@@ -226,7 +230,7 @@ export function JenisSimpananForm({ mode, initialData = null }: Props) {
                     />
                   </div>
                 </div>
-              </section>
+              </fieldset>
 
               <div className={styles.formActions}>
                 <Link className={styles.resetButton} href="/master/jenis-simpanan">
