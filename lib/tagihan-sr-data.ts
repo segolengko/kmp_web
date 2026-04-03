@@ -98,6 +98,8 @@ export async function getReferensiSROptions() {
 
   return items.map((item) => ({
     value: String(item.id),
+    unitBisnisId: item.unitBisnisId,
+    mitraPerusahaanId: item.mitraPerusahaanId,
     label: `${item.noSr} • ${item.mitraPerusahaanNama} • ${item.unitBisnisNama}`,
   }));
 }

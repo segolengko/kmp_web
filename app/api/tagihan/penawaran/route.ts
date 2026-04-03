@@ -170,6 +170,7 @@ export async function POST(request: Request) {
   const referensiSrId = toNullableNumber(body.referensiSrId);
   const tanggalPenawaran = String(body.tanggalPenawaran ?? "").trim();
   const requestedNoPenawaran = String(body.noPenawaran ?? "").trim();
+  const tagihanId = toNullableNumber(body.tagihanId);
   const subtotal = items.reduce((total, item) => total + item.jumlah, 0);
   const nilaiPpn = Math.round(subtotal * 0.11);
   const nilaiTotal = subtotal + nilaiPpn;
@@ -242,6 +243,27 @@ export async function POST(request: Request) {
   if (itemError) {
     await supabase.from("penawaran_project").delete().eq("id", inserted.id);
     return NextResponse.json({ error: itemError.message ?? "Gagal menyimpan item penawaran." }, { status: 400 });
+  }
+
+  if (tagihanId) {
+    const { data: updatedTagihan, error: tagihanError } = await supabase
+      .from("tagihan_project")
+      .update({
+        no_penawaran: payload.no_penawaran,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", tagihanId)
+      .select("id")
+      .maybeSingle();
+
+    if (tagihanError || !updatedTagihan) {
+      await supabase.from("penawaran_project_item").delete().eq("penawaran_project_id", inserted.id);
+      await supabase.from("penawaran_project").delete().eq("id", inserted.id);
+      return NextResponse.json(
+        { error: tagihanError?.message ?? "Data tagihan tujuan tidak ditemukan untuk mengaitkan nomor penawaran." },
+        { status: 400 },
+      );
+    }
   }
 
   return NextResponse.json({ data: inserted }, { status: 201 });

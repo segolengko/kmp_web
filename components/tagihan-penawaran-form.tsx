@@ -3,7 +3,7 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DarkSelect } from "@/components/dark-select";
 import { NumericInput } from "@/components/numeric-input";
 import type { PejabatTTDOption } from "@/lib/tagihan-pejabat-ttd-data";
@@ -18,6 +18,7 @@ import styles from "@/app/anggota/page.module.css";
 type Option = {
   value: string;
   label: string;
+  unitBisnisId?: number;
 };
 
 type Props = {
@@ -26,6 +27,7 @@ type Props = {
   itemTemplates: PenawaranItemTemplateOption[];
   pejabatOptions: PejabatTTDOption[];
   initialData?: PenawaranProjectDetail | null;
+  tagihanId?: string | null;
 };
 
 type ItemState = {
@@ -91,7 +93,7 @@ function getInitialState(
   srOptions: Option[],
 ): FormState {
   const defaultPembukaSurat =
-    'Dengan Hormat,\nDengan ini Kami "Koperasi Karyawan Manunggal Perkasa" mengajukan Penawaran harga, dengan rincian sebagai berikut:';
+    'Kepada Yth Terhormat:\nBpk\nDi\nTempat\n\nDengan Hormat,\nDengan ini Kami "Koperasi Karyawan Manunggal Perkasa" mengajukan Penawaran harga, dengan rincian sebagai berikut:';
 
   return {
     referensiSrId: String(initialData?.referensiSrId ?? srOptions[0]?.value ?? ""),
@@ -99,7 +101,7 @@ function getInitialState(
     tanggalPenawaran: initialData?.tanggalPenawaran ?? new Date().toISOString().slice(0, 10),
     perihal: initialData?.perihal ?? "Penawaran Harga",
     pembukaSurat: initialData?.pembukaSurat ?? defaultPembukaSurat,
-    tempatTtd: initialData?.tempatTtd ?? "",
+    tempatTtd: initialData?.tempatTtd ?? "Cirebon",
     tanggalTtd: initialData?.tanggalTtd ?? new Date().toISOString().slice(0, 10),
     pejabatTtdId: String(initialData?.pejabatTtdId ?? ""),
     penandatanganNama: initialData?.penandatanganNama ?? "",
@@ -122,11 +124,15 @@ export function TagihanPenawaranForm({
   itemTemplates,
   pejabatOptions,
   initialData = null,
+  tagihanId = null,
 }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [form, setForm] = useState<FormState>(() => getInitialState(initialData, srOptions));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const resolvedTagihanId = searchParams.get("tagihanId")?.trim() || tagihanId;
+  const backHref = resolvedTagihanId ? "/tagihan/tagihan-project" : "/tagihan/penawaran";
 
   const endpoint =
     mode === "create" ? "/api/tagihan/penawaran" : `/api/tagihan/penawaran/${initialData?.id}`;
@@ -141,6 +147,10 @@ export function TagihanPenawaranForm({
   const nilaiPpn = Math.round(subtotal * 0.11);
   const nilaiTotal = subtotal + nilaiPpn;
   const terbilang = toTerbilangRupiah(nilaiTotal);
+  const selectedSr = srOptions.find((option) => option.value === form.referensiSrId);
+  const filteredPejabatOptions = selectedSr?.unitBisnisId
+    ? pejabatOptions.filter((option) => option.unitBisnisId === selectedSr.unitBisnisId)
+    : pejabatOptions;
 
   function updateField<K extends keyof FormState>(field: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -253,6 +263,7 @@ export function TagihanPenawaranForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          tagihanId: mode === "create" ? resolvedTagihanId : null,
           nilaiPpn,
           subtotal,
           nilaiTotal,
@@ -272,7 +283,7 @@ export function TagihanPenawaranForm({
         throw new Error(result?.error ?? "Gagal menyimpan penawaran.");
       }
 
-      router.push("/tagihan/penawaran");
+      router.push(resolvedTagihanId ? "/tagihan/tagihan-project" : "/tagihan/penawaran");
       router.refresh();
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Terjadi kendala saat menyimpan.");
@@ -286,21 +297,6 @@ export function TagihanPenawaranForm({
       <div className="container">
         <div className={styles.formShell}>
           <section className={styles.panel}>
-            <div className={styles.topbar}>
-              <Link className={styles.back} href="/tagihan/penawaran">
-                Kembali ke daftar penawaran
-              </Link>
-              {mode === "edit" && initialData?.id ? (
-                <Link
-                  className={styles.secondaryAction}
-                  href={`/tagihan/penawaran/${initialData.id}/cetak`}
-                  target="_blank"
-                >
-                  Cetak Penawaran
-                </Link>
-              ) : null}
-            </div>
-
             <div className={styles.header}>
               <h1>{mode === "create" ? "Tambah Penawaran" : "Edit Penawaran"}</h1>
               <p>Input penawaran cukup sekali di sini supaya nanti dokumen turunan tinggal menarik data yang sama.</p>
@@ -554,7 +550,7 @@ export function TagihanPenawaranForm({
                       value={form.pejabatTtdId}
                     >
                       <option value="">Pilih pejabat</option>
-                      {pejabatOptions.map((option) => (
+                      {filteredPejabatOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
@@ -587,7 +583,7 @@ export function TagihanPenawaranForm({
                       value={form.pejabatTtd2Id}
                     >
                       <option value="">Pilih pejabat</option>
-                      {pejabatOptions.map((option) => (
+                      {filteredPejabatOptions.map((option) => (
                         <option key={`${option.value}-2`} value={option.value}>
                           {option.label}
                         </option>
@@ -620,7 +616,7 @@ export function TagihanPenawaranForm({
                       value={form.pejabatTtd3Id}
                     >
                       <option value="">Pilih pejabat</option>
-                      {pejabatOptions.map((option) => (
+                      {filteredPejabatOptions.map((option) => (
                         <option key={`${option.value}-3`} value={option.value}>
                           {option.label}
                         </option>
@@ -657,9 +653,13 @@ export function TagihanPenawaranForm({
               </fieldset>
 
               <div className={styles.formActions}>
-                <Link className={styles.resetButton} href="/tagihan/penawaran">
+                <button
+                  className={styles.resetButton}
+                  onClick={() => router.push(backHref)}
+                  type="button"
+                >
                   Batal
-                </Link>
+                </button>
                 <button className={styles.saveButton} disabled={isSubmitting} type="submit">
                   {isSubmitting ? "Menyimpan..." : "Simpan"}
                 </button>

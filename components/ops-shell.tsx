@@ -51,9 +51,10 @@ const topNavGroups = [
     items: [
       { href: "/tagihan/unit-bisnis", label: "Unit Bisnis" },
       { href: "/tagihan/mitra-perusahaan", label: "Mitra Perusahaan" },
-      { href: "/tagihan/pejabat-ttd", label: "Pejabat TTD" },
       { href: "/tagihan/sr", label: "Referensi SR" },
-      { href: "/tagihan/penawaran", label: "Penawaran" },
+      { href: "/tagihan/pejabat-ttd", label: "Pejabat TTD" },
+      { href: "/tagihan/tagihan-project", label: "Data Tagihan" },
+      { href: "/tagihan/laporan", label: "Laporan Tagihan" },
     ],
   },
   {

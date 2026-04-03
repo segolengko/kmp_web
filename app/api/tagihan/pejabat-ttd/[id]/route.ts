@@ -25,13 +25,22 @@ export async function PATCH(request: Request, context: RouteContext) {
 
   const payload = {
     nama_pejabat: String(body.namaPejabat ?? "").trim(),
-    jabatan_pejabat: String(body.jabatanPejabat ?? "").trim(),
+    jabatan_pejabat: String(body.jabatanPejabat ?? "").trim().toUpperCase(),
+    unit_bisnis_id:
+      body.unitBisnisId === null || body.unitBisnisId === undefined || String(body.unitBisnisId).trim() === ""
+        ? null
+        : Number(body.unitBisnisId),
+    mitra_perusahaan_id:
+      body.mitraPerusahaanId === null || body.mitraPerusahaanId === undefined || String(body.mitraPerusahaanId).trim() === ""
+        ? null
+        : Number(body.mitraPerusahaanId),
+    modul: String(body.modul ?? "").trim(),
     aktif: toBoolean(body.aktif),
     updated_at: new Date().toISOString(),
   };
 
-  if (!payload.nama_pejabat || !payload.jabatan_pejabat) {
-    return NextResponse.json({ error: "Nama pejabat dan jabatan wajib diisi." }, { status: 400 });
+  if (!payload.nama_pejabat || !payload.jabatan_pejabat || !payload.unit_bisnis_id || !payload.mitra_perusahaan_id || !payload.modul) {
+    return NextResponse.json({ error: "Unit bisnis, mitra, modul, nama pejabat, dan jabatan wajib diisi." }, { status: 400 });
   }
 
   const { data, error } = await supabase

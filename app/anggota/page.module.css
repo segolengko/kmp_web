@@ -716,6 +716,12 @@
   flex-wrap: wrap;
 }
 
+.reportActionStack {
+  display: grid;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
 .editAction,
 .deleteAction {
   display: inline-flex;
@@ -819,6 +825,13 @@
   filter: none;
 }
 
+.actionReadonly {
+  pointer-events: none;
+  opacity: 0.56;
+  box-shadow: none;
+  filter: none;
+}
+
 .statusChip {
   padding: 6px 9px;
   border-radius: 999px;
@@ -826,6 +839,10 @@
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.ageChip {
+  min-width: 76px;
 }
 
 .statusAktif {
@@ -943,6 +960,347 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.workflowCard {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  border-radius: 22px;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(7, 12, 19, 0.46);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.workflowCardActive {
+  border-color: rgba(51, 209, 198, 0.22);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+}
+
+.workflowCardButton {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  padding: 18px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.workflowCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.workflowCardHeaderSide {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.workflowToggle {
+  color: #ffe3a1;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.workflowPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.workflowPreviewItem {
+  display: grid;
+  gap: 6px;
+}
+
+.workflowPreviewItem span {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.workflowPreviewItem strong {
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.workflowMetaGrid,
+.workflowDocumentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.workflowDetailPanel {
+  display: grid;
+  gap: 16px;
+  padding: 0 18px 18px;
+}
+
+.workflowFlow {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+.workflowFlowSegment {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
+  gap: 10px;
+  align-items: center;
+}
+
+.workflowStep {
+  display: grid;
+  gap: 8px;
+  min-height: 108px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.workflowStep strong {
+  font-size: 0.86rem;
+}
+
+.workflowStep span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.workflowStepDone {
+  border-color: rgba(51, 209, 198, 0.26);
+  background: linear-gradient(180deg, rgba(51, 209, 198, 0.14), rgba(51, 209, 198, 0.06));
+}
+
+.workflowStepCurrent {
+  border-color: rgba(244, 185, 66, 0.26);
+  background: linear-gradient(180deg, rgba(244, 185, 66, 0.14), rgba(255, 236, 186, 0.06));
+}
+
+.workflowStepPending {
+  border-style: dashed;
+  opacity: 0.9;
+}
+
+.workflowArrow {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(51, 209, 198, 0.14), rgba(255, 236, 186, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cfeee8;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.workflowActionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.timelineBoard {
+  display: grid;
+  gap: 12px;
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.timelineNodeWrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 26px;
+  gap: 8px;
+  align-items: center;
+}
+
+.timelineNode {
+  display: grid;
+  gap: 6px;
+  min-height: 96px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.timelineNodeTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timelineNode strong {
+  font-size: 0.84rem;
+}
+
+.timelineNode span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.timelineNode:hover {
+  transform: translateY(-1px);
+  border-color: rgba(51, 209, 198, 0.24);
+}
+
+.timelineNodeActive {
+  border-color: rgba(244, 185, 66, 0.3);
+  background: linear-gradient(180deg, rgba(244, 185, 66, 0.14), rgba(255, 236, 186, 0.06));
+  box-shadow: 0 10px 24px rgba(244, 185, 66, 0.12);
+}
+
+.timelineNodeDone {
+  border-color: rgba(51, 209, 198, 0.38);
+  background: linear-gradient(180deg, rgba(32, 180, 167, 0.2), rgba(10, 80, 75, 0.1));
+  box-shadow: inset 0 0 0 1px rgba(51, 209, 198, 0.08);
+}
+
+.timelineNodePending {
+  opacity: 0.86;
+  border-style: dashed;
+}
+
+.timelineStatusIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  flex: 0 0 22px;
+}
+
+.timelineStatusIcon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.timelineStatusIcon svg circle,
+.timelineStatusIcon svg path {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.timelineStatusIconDone {
+  color: #6cf0df;
+}
+
+.timelineStatusIconDone svg circle,
+.timelineStatusIconDone svg path {
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.timelineStatusIconActive {
+  color: #ffd98b;
+}
+
+.timelineStatusIconActive svg circle,
+.timelineStatusIconActive svg path {
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.timelineStatusIconPending {
+  color: rgba(207, 238, 232, 0.4);
+}
+
+.timelineStatusIconPending svg circle {
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.timelineConnector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 26px;
+}
+
+.timelineConnectorLine {
+  flex: 1;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(107, 119, 133, 0.26), rgba(143, 156, 171, 0.18));
+}
+
+.timelineConnectorDone .timelineConnectorLine {
+  background: linear-gradient(90deg, rgba(51, 209, 198, 0.38), rgba(117, 240, 227, 0.3));
+  box-shadow: 0 0 14px rgba(51, 209, 198, 0.1);
+}
+
+.timelineConnectorIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: rgba(191, 204, 219, 0.62);
+}
+
+.timelineConnectorIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.timelineConnectorIcon svg path {
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.timelineConnectorDone .timelineConnectorIcon {
+  color: rgba(255, 220, 142, 0.94);
+}
+
+.timelineEditor {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.timelineFormGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .tableIdentity {
   display: grid;
   gap: 2px;
@@ -980,6 +1338,13 @@
 .summaryTile strong {
   font-size: 0.94rem;
   line-height: 1.5;
+}
+
+.summaryMeta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .managementForm {
@@ -1074,6 +1439,17 @@
     grid-template-columns: 1fr;
   }
 
+  .workflowMetaGrid,
+  .workflowDocumentGrid,
+  .workflowPreviewGrid,
+  .timelineFormGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workflowFlow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .searchField {
     grid-column: 1 / -1;
   }
@@ -1121,6 +1497,43 @@
 
   .itemInlineGrid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .workflowMetaGrid,
+  .workflowDocumentGrid,
+  .workflowPreviewGrid,
+  .workflowFlow,
+  .timelineFormGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflowFlowSegment {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineRow {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineNodeWrap {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineConnector {
+    width: 100%;
+    justify-content: center;
+    padding: 4px 0;
+  }
+
+  .timelineConnectorLine {
+    max-width: 28px;
+    flex: 0 0 28px;
+    transform: rotate(90deg);
+  }
+
+  .workflowArrow {
+    width: 100%;
+    height: 26px;
   }
 
 }

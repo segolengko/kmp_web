@@ -1,0 +1,852 @@
+.printPage {
+  min-height: 100vh;
+  background: #f4f7fb;
+  padding: 32px;
+}
+
+.jcprLandscape {
+  padding: 18px;
+}
+
+.printCard {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #17212b;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+}
+
+.invoicePage {
+  padding: 18px;
+}
+
+.invoiceCard {
+  max-width: 920px;
+  padding: 18px 22px 24px;
+}
+
+.invoiceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.invoiceHeaderLeft {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+  flex: 1;
+}
+
+.invoiceHeaderLeft h1,
+.invoiceHeaderLeft strong,
+.invoiceHeaderLeft span,
+.invoiceHeaderRight,
+.invoiceTitleSection h2,
+.invoiceMeta,
+.invoiceTable,
+.invoiceSignatureSection {
+  font-family: "Arial", "Helvetica", sans-serif;
+}
+
+.invoiceHeaderLeft h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.invoiceHeaderLeft strong {
+  font-size: 16px;
+}
+
+.invoiceHeaderLeft span {
+  font-size: 11px;
+}
+
+.invoiceHeaderRight {
+  min-width: 110px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.invoiceTitleSection {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.invoiceTitleSection h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.invoiceMetaSection {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.invoiceRecipient {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.invoiceRecipient strong {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.invoiceMeta {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.invoiceMeta div {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+
+.invoiceMeta div strong {
+  font-weight: 500;
+}
+
+.invoiceTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 28px;
+  font-size: 13px;
+}
+
+.invoiceTable th,
+.invoiceTable td {
+  border: 1px solid #4b5563;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+.invoiceTable thead th {
+  background: #e8fbff;
+  text-align: center;
+  font-weight: 700;
+}
+
+.invoiceNoCol {
+  width: 44px;
+}
+
+.invoicePriceCol,
+.invoiceAmountCol {
+  width: 170px;
+}
+
+.invoiceNoCell {
+  text-align: center;
+}
+
+.invoiceNumericCell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.invoiceBlankRow td {
+  height: 24px;
+  padding: 0;
+}
+
+.invoiceSummaryLabel {
+  font-weight: 500;
+}
+
+.invoiceTotalCell {
+  font-weight: 800;
+}
+
+.invoiceTerbilangCell {
+  padding-top: 10px;
+  padding-bottom: 14px;
+}
+
+.invoiceTerbilangCell strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.invoiceTerbilangCell em {
+  display: block;
+  font-size: 13px;
+}
+
+.invoiceSignatureSection {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.invoiceSignatureBlock {
+  min-width: 260px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.invoiceSignatureSpace {
+  height: 90px;
+}
+
+.invoiceSignatureBlock strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.beritaAcaraPage {
+  padding: 18px;
+}
+
+.beritaAcaraCard {
+  max-width: 900px;
+  padding: 18px 26px 28px;
+}
+
+.beritaAcaraHeader {
+  border-bottom: 2px solid #94a3b8;
+  padding-bottom: 10px;
+}
+
+.beritaAcaraHeaderText {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+}
+
+.beritaAcaraHeaderText h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #2a6ca8;
+}
+
+.beritaAcaraHeaderText strong {
+  font-size: 13px;
+}
+
+.beritaAcaraHeaderText span {
+  font-size: 12px;
+}
+
+.beritaAcaraTitleSection {
+  margin-top: 30px;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+}
+
+.beritaAcaraTitleSection h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.beritaAcaraIntro,
+.beritaAcaraMeta,
+.beritaAcaraTerbilang,
+.beritaAcaraClosing,
+.beritaAcaraSignatureSection,
+.beritaAcaraTable {
+  font-family: "Times New Roman", serif;
+}
+
+.beritaAcaraIntro {
+  margin-top: 26px;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: justify;
+}
+
+.beritaAcaraIntro p {
+  margin: 0;
+}
+
+.beritaAcaraMeta {
+  margin-top: 18px;
+  display: grid;
+  gap: 4px;
+  font-size: 16px;
+}
+
+.beritaAcaraMeta div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+}
+
+.beritaAcaraTable {
+  width: 100%;
+  margin-top: 18px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.beritaAcaraTable th,
+.beritaAcaraTable td {
+  border: 1px solid #374151;
+  padding: 4px 8px;
+  vertical-align: top;
+}
+
+.beritaAcaraTable th {
+  text-align: center;
+  font-weight: 700;
+}
+
+.beritaAcaraProgressCol {
+  width: 90px;
+}
+
+.beritaAcaraAmountCol {
+  width: 165px;
+}
+
+.beritaAcaraCenterCell {
+  text-align: center;
+}
+
+.beritaAcaraAmountCell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.beritaAcaraSummaryLabel {
+  text-align: right;
+  font-weight: 700;
+}
+
+.beritaAcaraTotalCell {
+  font-weight: 800;
+}
+
+.beritaAcaraTerbilang {
+  margin-top: 16px;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  font-size: 16px;
+}
+
+.beritaAcaraTerbilang strong {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.beritaAcaraClosing {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.beritaAcaraClosing p {
+  margin: 0;
+}
+
+.beritaAcaraSignatureSection {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 80px;
+}
+
+.beritaAcaraSignatureCol {
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+  font-size: 16px;
+}
+
+.beritaAcaraSignatureSpace {
+  height: 110px;
+}
+
+.beritaAcaraSignatureCol strong {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.jcprCard {
+  max-width: 1400px;
+  padding: 18px;
+}
+
+.header {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.header p {
+  margin: 0;
+  color: #526071;
+}
+
+.kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.section {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.item {
+  border: 1px solid #d7e1ea;
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.item span {
+  font-size: 13px;
+  color: #5d6b7d;
+}
+
+.item strong {
+  font-size: 17px;
+}
+
+.jcprTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.jcprTable th,
+.jcprTable td {
+  border: 1px solid #1f2937;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+.jcprTable thead th {
+  background: #eef3f7;
+  text-align: center;
+}
+
+.jcprTitleCell {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.jcprItemCol {
+  min-width: 280px;
+}
+
+.jcprItemCol span {
+  display: block;
+  margin-top: 4px;
+  color: #526071;
+}
+
+.jcprSummaryRow td {
+  font-weight: 700;
+}
+
+.jcprSummaryLabel {
+  text-align: right;
+}
+
+.jcprSummaryValue {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.jcprQtyCell {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.jcprAmountCell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.jcprPayableSentenceRow td {
+  padding: 10px 14px;
+}
+
+.jcprPayableCell {
+  vertical-align: top;
+  text-align: right;
+}
+
+.jcprPayableBlock {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.jcprPayableLabel {
+  text-transform: uppercase;
+}
+
+.jcprPayableColon {
+  text-align: left;
+}
+
+.jcprPayableBlock em {
+  font-style: italic;
+  font-weight: 500;
+  text-transform: none;
+  text-align: left;
+}
+
+.jcprEmpty {
+  text-align: center;
+  color: #526071;
+  padding: 24px 0;
+}
+
+.jcprBlankRow td {
+  height: 32px;
+  padding: 0;
+}
+
+.jcprCommentSection {
+  margin-top: 18px;
+}
+
+.jcprCommentSignatureBox {
+  border: 1px solid #1f2937;
+  padding: 0;
+}
+
+.jcprCommentSignatureBox h2 {
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 13px;
+  border-bottom: 1px solid #1f2937;
+}
+
+.jcprCommentSpacer {
+  display: none;
+}
+
+.jcprSignatureArea {
+  display: grid;
+  grid-template-columns: 4fr 1.25fr;
+  gap: 0;
+  margin-top: 0;
+}
+
+.jcprReviewSection {
+  margin-top: 14px;
+}
+
+.jcprReviewBlock {
+  border: 1px solid #1f2937;
+  padding: 12px;
+}
+
+.jcprReviewBlock h2 {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.jcprReviewGrid {
+  display: grid;
+  grid-template-columns: 1.05fr 1.8fr 1.45fr 0.8fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.jcprReviewTax h3,
+.jcprScoreBlock h3,
+.jcprGuidelineBlock h3 {
+  margin: 0 0 2px;
+  font-size: 13px;
+}
+
+.jcprReviewTax {
+  position: relative;
+  padding-right: 68px;
+}
+
+.jcprTaxContent {
+  display: block;
+  margin-top: 6px;
+}
+
+.jcprTaxLabels {
+  display: grid;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.jcprTaxMatrix {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  min-width: 58px;
+  border: 1px solid #1f2937;
+}
+
+.jcprTaxMatrix span {
+  padding: 5px 6px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  min-height: 12px;
+}
+
+.jcprTaxMatrix span:nth-child(2n) {
+  border-left: 1px solid #1f2937;
+}
+
+.jcprTaxMatrix span:nth-child(n + 3) {
+  font-weight: 400;
+}
+
+.jcprTaxMatrix span:nth-child(n + 3):nth-child(-n + 4) {
+  border-top: 1px solid #1f2937;
+}
+
+.jcprTaxMatrix span:nth-child(n + 5) {
+  border-top: 1px solid #1f2937;
+}
+
+.jcprScoreTable {
+  display: grid;
+  gap: 0;
+}
+
+.jcprScoreTopRow,
+.jcprScoreRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.jcprScoreTopRow {
+  margin-bottom: 2px;
+}
+
+.jcprScoreTopRow h3 {
+  margin: 0;
+}
+
+.jcprScoreValuesTitle {
+  min-width: 140px;
+  text-align: center;
+  border: 1px solid #1f2937;
+  padding: 3px 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.jcprScoreRow > span:first-child {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.jcprScoreValues {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  min-width: 140px;
+  border: 1px solid #1f2937;
+}
+
+.jcprScoreValues span {
+  padding: 2px 0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.1;
+}
+
+.jcprScoreValues span + span {
+  border-left: 1px solid #1f2937;
+}
+
+.jcprGuidelineBlock {
+  display: grid;
+  justify-content: start;
+  gap: 2px;
+}
+
+.jcprGuidelineTitle {
+  min-width: 140px;
+  text-align: center;
+  border: 1px solid #1f2937;
+  padding: 3px 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.jcprGuidelineTable {
+  width: 140px;
+  border: 1px solid #1f2937;
+}
+
+.jcprGuidelineRow {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+}
+
+.jcprGuidelineRow + .jcprGuidelineRow {
+  border-top: 1px solid #1f2937;
+}
+
+.jcprGuidelineRow span {
+  padding: 3px 6px;
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.jcprGuidelineRow span:first-child {
+  text-align: center;
+  font-weight: 700;
+  border-right: 1px solid #1f2937;
+}
+
+.jcprSignatureBox,
+.jcprAcceptedBox {
+  padding: 4px 12px 8px;
+  min-height: 176px;
+}
+
+.jcprSignatureBox h2,
+.jcprAcceptedBox h2 {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.jcprSignatureGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 0;
+}
+
+.jcprSignatureGrid div {
+  min-height: 142px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding-top: 0;
+  gap: 4px;
+}
+
+.jcprSignatureGrid div strong {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 36px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.jcprSignatureGrid div::before {
+  content: none;
+}
+
+.jcprAcceptedSlot {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  position: relative;
+  padding-top: 0;
+  padding-bottom: 18px;
+  font-size: 11px;
+  font-weight: 700;
+  gap: 4px;
+}
+
+.jcprAcceptedSlot strong {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 36px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.jcprAcceptedSlot::before {
+  content: none;
+}
+
+.jcprAcceptedBox {
+  border-left: 1px solid #1f2937;
+}
+
+@media print {
+  .printPage {
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .printCard {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: none;
+    padding: 24px 0;
+  }
+
+  .jcprCard {
+    padding: 0;
+  }
+}

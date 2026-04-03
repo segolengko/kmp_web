@@ -76,3 +76,14 @@ export async function getMitraPerusahaanById(id: string) {
 
   return mapMitraPerusahaan(data as SupabaseMitraPerusahaanRow);
 }
+
+export async function getMitraPerusahaanOptions() {
+  const items = await getMitraPerusahaanData();
+
+  return items
+    .filter((item) => item.aktif)
+    .map((item) => ({
+      value: String(item.id),
+      label: item.namaPerusahaan,
+    }));
+}

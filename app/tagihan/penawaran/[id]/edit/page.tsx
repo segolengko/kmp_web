@@ -6,9 +6,12 @@ import { getReferensiSROptions } from "@/lib/tagihan-sr-data";
 
 type PageProps = {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{
+    tagihanId?: string;
+  }>;
 };
 
-export default async function EditPenawaranPage({ params }: PageProps) {
+export default async function EditPenawaranPage({ params, searchParams }: PageProps) {
   const { id } = await params;
   const [data, srOptions, itemTemplates, pejabatOptions] = await Promise.all([
     getPenawaranProjectById(id),
@@ -16,6 +19,8 @@ export default async function EditPenawaranPage({ params }: PageProps) {
     getPenawaranItemTemplateOptions(),
     getPejabatTTDOptions(),
   ]);
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const tagihanId = resolvedSearchParams.tagihanId?.trim() || null;
 
   if (!data) {
     notFound();
@@ -28,6 +33,7 @@ export default async function EditPenawaranPage({ params }: PageProps) {
       mode="edit"
       pejabatOptions={pejabatOptions}
       srOptions={srOptions}
+      tagihanId={tagihanId}
     />
   );
 }

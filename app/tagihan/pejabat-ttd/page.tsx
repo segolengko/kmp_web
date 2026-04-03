@@ -31,6 +31,9 @@ export default async function TagihanPejabatTTDPage() {
           <table className={styles.table}>
             <thead>
               <tr>
+                <th>Unit</th>
+                <th>Mitra</th>
+                <th>Modul</th>
                 <th>Nama Pejabat</th>
                 <th>Jabatan</th>
                 <th>Status</th>
@@ -40,13 +43,16 @@ export default async function TagihanPejabatTTDPage() {
             <tbody>
               {items.length === 0 ? (
                 <tr>
-                  <td className={styles.emptyCell} colSpan={4}>
+                  <td className={styles.emptyCell} colSpan={7}>
                     Belum ada pejabat tanda tangan.
                   </td>
                 </tr>
               ) : (
                 items.map((item) => (
                   <tr key={item.id}>
+                    <td>{item.unitBisnisNama}</td>
+                    <td>{item.mitraPerusahaanNama}</td>
+                    <td>{item.modul || "-"}</td>
                     <td className={styles.nameCell}>{item.namaPejabat}</td>
                     <td>{item.jabatanPejabat}</td>
                     <td>

@@ -19,9 +19,19 @@ const tagihanCards = [
     description: "Catat nomor SR dari mitra sebagai pintu awal pembuatan penawaran dan dokumen proyek.",
   },
   {
-    href: "/tagihan/penawaran",
-    title: "Penawaran",
-    description: "Input dokumen penawaran sekali, lengkap dengan item pekerjaan dan nilai, agar bisa diturunkan ke dokumen lain.",
+    href: "/tagihan/pejabat-ttd",
+    title: "Pejabat TTD",
+    description: "Master penandatangan per unit, mitra, dan modul dokumen agar cetak penawaran sampai JCPR lebih konsisten.",
+  },
+  {
+    href: "/tagihan/tagihan-project",
+    title: "Data Tagihan",
+    description: "Simpan header tagihan per JO sebagai pusat monitoring dokumen, JPR, dan pencairan.",
+  },
+  {
+    href: "/tagihan/laporan",
+    title: "Laporan Tagihan",
+    description: "Pantau tagihan per unit, fokus pada status yang belum tertagih berikut umur tagihannya dengan list data.",
   },
 ];
 

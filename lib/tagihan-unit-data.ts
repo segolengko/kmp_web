@@ -61,3 +61,14 @@ export async function getUnitBisnisById(id: string) {
 
   return mapUnitBisnis(data as SupabaseUnitBisnisRow);
 }
+
+export async function getUnitBisnisOptions() {
+  const items = await getUnitBisnisData();
+
+  return items
+    .filter((item) => item.aktif)
+    .map((item) => ({
+      value: String(item.id),
+      label: `${item.kodeUnit} - ${item.namaUnit}`,
+    }));
+}
